@@ -9,7 +9,7 @@ Ao final deste conteúdo você será capaz de:
   - 2- c - controller - php no sentido de negócios 
   - 3- m - model - banco de dados 
   
-  
+- Framework de PHP - Laravel e Codeigniter
 
 - Navegar entre páginas utilizando rotas
 - Criar uma View
@@ -24,7 +24,7 @@ Ao final deste conteúdo você será capaz de:
 O sistema será capaz de:
 
 - Exibir uma página
-- Receber dados do formulário
+- Receber dados do formulário JS
 - Enviar dados ao Controller
 - Validar informações
 - Retornar uma resposta ao usuário
