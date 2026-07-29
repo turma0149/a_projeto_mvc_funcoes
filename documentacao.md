@@ -3,9 +3,12 @@
  2- Criar arquivo documentacao.md
  3- Criar arquivo index.php 
  4- Criar arquivo routes.php
+ 5- Gerar o html para utilizar as rotas (3)
+ 6- Gerar o php das rotas (4)
+ 7- Criar a página do código 404
 
  
-
+https://github.com/turma0149/ 
 
 # MVC com PHP
 
