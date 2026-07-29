@@ -1,4 +1,13 @@
-# Introdução ao MVC com PHP
+# Roteiro de execução do projeto
+ 1- Criar as pastas
+ 2- Criar arquivo documentacao.md
+ 3- Criar arquivo index.php 
+ 4- Criar arquivo routes.php
+
+ 
+
+
+# MVC com PHP
 
 ## Objetivo
 
