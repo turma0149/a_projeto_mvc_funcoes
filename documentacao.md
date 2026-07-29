@@ -5,7 +5,8 @@
  4- Criar arquivo routes.php
  5- Gerar o html para utilizar as rotas (3)
  6- Gerar o php das rotas (4)
- 7- Criar a página do código 404
+ 7- Criar a view do código 404
+ 8- Criar a view de produtos
 
  
 https://github.com/turma0149/ 
