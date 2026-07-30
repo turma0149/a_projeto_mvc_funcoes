@@ -22,7 +22,7 @@ form.addEventListener("submit", async function (evento) {
     try {
         // Envia os dados para o Controller
         const resposta = await fetch("controllers/ProdutoController.php", {
-            method: "GET",
+            method: "POST",
             body: dados
         });
 
@@ -31,7 +31,7 @@ form.addEventListener("submit", async function (evento) {
 
         console.log(resultado);
 
-        // Verifica o código HTTP da resposta
+        // Verifica o código HTTP (200..) da resposta
         if (!resposta.ok) {
             mensagem.className = "alert alert-danger mt-3";
             mensagem.textContent = resultado.mensagem;

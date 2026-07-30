@@ -3,13 +3,13 @@
  2- Criar arquivo documentacao.md ***
  3- Criar arquivo index.php ***
    -> para chamar rotas 
- 4- Criar arquivo routes.php ***
-   -> Gerar o php das rotas 
- 5- Criar a view do código 404 ***
- 6- Criar a view de produtos/clientes/funcionarios
- 7- Criar o script de produtos/clientes/funcionario 
- 8- Criar o css de de produtos/clientes/funcionario 
- 9- Criar o controller de produto/cliente/funcionario
+ 4- Criar arquivo routes.php *** 
+   -> Gerar o php das rotas válidas
+ 5- Criar a view do código 404 *** 
+ 6- Criar a view de produtos/clientes/ ***
+ 7- Criar o script de produtos/clientes/ ***
+ 8- Criar o css de de produtos/clientes/ ***
+ 9- Criar o controller de produto/cliente/ ***
 
  
  

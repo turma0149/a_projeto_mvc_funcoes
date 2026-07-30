@@ -35,15 +35,15 @@
                 Cadastrar
             </button>
 
-            <!-- Mensagem de Retorno -->
-            <div id="mensagem" class="alert d-none mt-3"> </div>
-
         </form>
 
-
+        <!-- Mensagem de Retorno -->
+        <div id="mensagem" class="alert d-none mt-3"> </div>
+                
     </div>
 
 
 </section>
 
 <!-- script da página -->
+<script src="assets/js/cliente.js"></script>

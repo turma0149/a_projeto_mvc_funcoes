@@ -34,11 +34,10 @@
             <button type="submit" class="btn btn-primary w-100">
                 Cadastrar
             </button>
-
-            <!-- Mensagem de Retorno -->
-            <div id="mensagem" class="alert d-none mt-3"> </div>
-
         </form>
+
+        <!-- Mensagem de Retorno -->
+        <div id="mensagem" class="alert d-none mt-3"> </div>
 
 
     </div>
