@@ -2,13 +2,14 @@
  1- Criar as pastas ***
  2- Criar arquivo documentacao.md ***
  3- Criar arquivo index.php ***
- 4- Criar arquivo routes.php
- 5- Gerar o html para utilizar as rotas (3)
- 6- Gerar o php das rotas (4)
- 7- Criar a view do código 404
- 8- Criar a view de produtos
- 9- Criar o script de produtos 
- 10-Criar o controller de produto 
+   -> para chamar rotas 
+ 4- Criar arquivo routes.php ***
+   -> Gerar o php das rotas 
+ 5- Criar a view do código 404 ***
+ 6- Criar a view de produtos/clientes/funcionarios
+ 7- Criar o script de produtos/clientes/funcionario 
+ 8- Criar o css de de produtos/clientes/funcionario 
+ 9- Criar o controller de produto/cliente/funcionario
 
  
  

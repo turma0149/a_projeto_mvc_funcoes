@@ -1,3 +1,5 @@
+
+<!-- TODO: CSS da Página -->
 <section>
     <div class="col-md-6 mx-auto">
         <h2> Cadastro de produtos </h2>
@@ -41,7 +43,6 @@
 
     </div>
 
-
-    <script src="assets/js/produto.js"></script>
-
 </section>
+
+<script src="assets/js/produto.js"></script>
