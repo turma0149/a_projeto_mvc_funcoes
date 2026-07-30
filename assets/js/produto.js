@@ -14,7 +14,7 @@ form.addEventListener("submit", async function (evento){
     //Exibe uma mensagem enquanto os dados são enviados
     mensagem.className = "alert alert-info mt-3";
     mensagem.textContent = "Enviando dados...";
-
+    
     try{
         //Envia os dados para o Controller
         const resposta = await fetch("controllers/ProdutoController.php",{
