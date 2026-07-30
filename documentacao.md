@@ -7,7 +7,8 @@
  6- Gerar o php das rotas (4)
  7- Criar a view do código 404
  8- Criar a view de produtos
-
+ 9- Criar o scrip de produtos 
+ 
  
 https://github.com/turma0149/ 
 

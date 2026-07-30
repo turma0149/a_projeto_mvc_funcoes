@@ -42,4 +42,6 @@
     </div>
 
 
+    <script src="assets/js/produto.js"></script>
+
 </section>
