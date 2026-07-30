@@ -37,7 +37,17 @@
                         Produtos
                     </a>
 
-                   <!-- TODO: Funcionarios e Clientes -->
+                    <a
+                        href="index.php?page=clientes"
+                        class="nav-link text-white">
+                        Clientes
+                    </a>
+
+                    <a
+                        href="index.php?page=funcionarios"
+                        class="nav-link text-white">
+                        Funcionários
+                    </a>
 
                 </nav>
 
