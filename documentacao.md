@@ -8,7 +8,9 @@
  7- Criar a view do código 404
  8- Criar a view de produtos
  9- Criar o script de produtos 
- 10-Criar o controller de produto
+    ----- > precisamos corrigir o js, falta mostrar as mensagens 
+ 10-Criar o controller de produto 
+
  
  
 https://github.com/turma0149/ 

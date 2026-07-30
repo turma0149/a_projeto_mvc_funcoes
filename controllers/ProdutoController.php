@@ -4,7 +4,7 @@
 header("Content-Type: application/json; charset=utf-8");
 
 //Verifica se a requisição é do tipo POST
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405); //405 - método não permitido
 
     echo json_encode([
