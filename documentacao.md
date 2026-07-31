@@ -12,6 +12,13 @@
  9- Criar o css de de produtos/clientes/funcionarios
 
 
+ Exercício: Usando o roteiro abaixo crie um sistema capaz de armazenar informações de 
+	- Médico (Nome, cpf, crm, email, telefone)
+        - Cliente (Nome, cpf, email, telefone)
+	- Agenda (crmMedico, cpfCliente, data, horário)
+
+
+
 _________________________________ - até aqui validadado ___________________________
 
  
