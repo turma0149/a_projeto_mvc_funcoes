@@ -2,7 +2,7 @@
 
 <section>
     <div class="col-md-6 mx-auto">
-        <h2> Cadastro de clientes </h2>
+        <h2> Cadastro de funcionários </h2>
 
         <!-- Formulário -->
         <form id="formFuncionario">
