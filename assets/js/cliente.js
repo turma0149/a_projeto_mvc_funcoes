@@ -48,7 +48,7 @@ form.addEventListener("submit", async function (evento) {
 
     } catch (erro) {
         mensagem.className = "alert alert-danger mt-3";
-        mensagem.textContent = "Erro ao enviar os dados para o controller produto";
+        mensagem.textContent = "Erro ao enviar os dados para o controller cliente";
 
         console.log(erro);
     }

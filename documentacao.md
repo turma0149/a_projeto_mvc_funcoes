@@ -6,9 +6,9 @@
  4- Criar arquivo routes.php **
    -> Gerar o php das rotas válidas
  5- Criar a view do código 404 **
- 6- Criar a view de produtos/clientes/funcionarios
- 7- Criar o script de produtos/clientes/funcionarios
- 8- Criar o controller de produto/cliente/funcionarios
+ 6- Criar a view de produtos/clientes/funcionarios **
+ 7- Criar o script de produtos/clientes/funcionarios ** 
+ 8- Criar o controller de produto/cliente/funcionarios **
  9- Criar o css de de produtos/clientes/funcionarios
 
 
