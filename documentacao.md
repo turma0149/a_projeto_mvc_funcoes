@@ -1,16 +1,18 @@
 # Roteiro de execução do projeto
- 1- Criar as pastas **
- 2- Criar arquivo documentacao.md **
- 3- Criar arquivo index.php **
+ 1- Criar as pastas
+ 2- Criar arquivo documentacao.md
+ 3- Criar arquivo index.php
    -> para chamar rotas 
- 4- Criar arquivo routes.php **
+ 4- Criar arquivo routes.php
    -> Gerar o php das rotas válidas
- 5- Criar a view do código 404 **
- 6- Criar a view de produtos/clientes/funcionarios **
- 7- Criar o script de produtos/clientes/funcionarios ** 
- 8- Criar o controller de produto/cliente/funcionarios **
+ 5- Criar a view do código 404
+ 6- Criar a view de produtos/clientes/funcionarios
+ 7- Criar o script de produtos/clientes/funcionarios
+ 8- Criar o controller de produto/cliente/funcionarios
  9- Criar o css de de produtos/clientes/funcionarios
 
+
+_________________________________ - até aqui validadado ___________________________
 
  
  

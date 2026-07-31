@@ -1,5 +1,7 @@
+     
+<!-- css da página -->
+<link rel="stylesheet" href="assets/css/produto.css">
 
-<!-- TODO: CSS da Página -->
 <section>
     <div class="col-md-6 mx-auto">
         <h2> Cadastro de produtos </h2>

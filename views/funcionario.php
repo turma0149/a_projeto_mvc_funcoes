@@ -1,4 +1,5 @@
 <!-- css da página -->
+<link rel="stylesheet" href="assets/css/funcionario.css">
 
 <section>
     <div class="col-md-6 mx-auto">
@@ -46,4 +47,4 @@
 </section>
 
 <!-- script da página -->
-<script src="assets/js/cliente.js"></script>
+<script src="assets/js/funcionario.js"></script>
