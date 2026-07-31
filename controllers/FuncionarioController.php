@@ -4,7 +4,7 @@
 header("Content-Type: application/json; charset=utf-8");
 
 //Verifica se a requisição é do tipo POST
-    if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405); //405 - método não permitido
 
     echo json_encode([
@@ -17,12 +17,12 @@ header("Content-Type: application/json; charset=utf-8");
 
 // Recebe os dados enviados pelo formulário
 $nome = trim($_POST['nome']);
-$categoria = trim($_POST['categoria']);
-$preco = trim($_POST['preco']);
-$quantidade = trim($_POST['quantidade']);
+$regFunc = trim($_POST['regFunc']);
+$pis = trim($_POST['pis']);
+$cnpj = trim($_POST['cnpj']);
 
 // Valida os campos obrigatórios 
-if ($nome === "" || $categoria === "" || $preco === "" || $quantidade === "") {
+if ($nome === "" || $regFunc === "" || $pis === "" || $cnpj === "") {
     http_response_code(400);
 
     echo json_encode([
@@ -38,13 +38,13 @@ if ($nome === "" || $categoria === "" || $preco === "" || $quantidade === "") {
 //Retornar sucesso 
 http_response_code(200);
 
-echo json_encode ([
+echo json_encode([
     "sucesso" => true,
-    "mensagem" => "Produto cadastrado com sucesso!",
-    "produto" => [
+    "mensagem" => "Funcionario cadastrado com sucesso!",
+    "funcionario" => [
         "nome" => $nome,
-        "categoria" => $categoria,
-        "preco" => $preco,
-        "quantidade" => $quantidade,
+        "regFunc" => $regFunc,
+        "pis" => $pis,
+        "quantidade" => $cnpj,
     ]
 ]);
