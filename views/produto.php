@@ -40,8 +40,7 @@
 
                      <div class="input-group">
                          <span class="input-group-text">R$</span>
-                         <input type="text" id="preco" name="preco" class="form-control">
-                         <!-- TODO: type text -->
+                         <input type="text" id="preco" name="preco" class="form-control">                         
                      </div>
 
                      <div class="invalid-feedback"></div>
