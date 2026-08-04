@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="assets/css/funcionario.css">
 
 <section>
-    <div class="col-md-6 mx-auto">
+    <div class="col-md-6 mx-auto mt-5">
         <h2> Cadastro de funcionários </h2>
 
         <!-- Formulário -->
