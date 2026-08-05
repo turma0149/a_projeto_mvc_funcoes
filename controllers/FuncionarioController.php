@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
     echo json_encode([
         "sucesso" => false,
-        "mensagem" => "Método não permitido, esperava GET"
+        "mensagem" => "Método não permitido, esperava POST"
     ]);
 
     exit;
@@ -45,6 +45,6 @@ echo json_encode([
         "nome" => $nome,
         "regFunc" => $regFunc,
         "pis" => $pis,
-        "quantidade" => $cnpj,
+        "cnpj" => $cnpj
     ]
 ]);

@@ -4,12 +4,12 @@
 header("Content-Type: application/json; charset=utf-8");
 
 //Verifica se a requisição é do tipo POST
-    if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405); //405 - método não permitido
 
     echo json_encode([
         "sucesso" => false,
-        "mensagem" => "Método não permitido, esperava GET"
+        "mensagem" => "Método não permitido, esperava POST"
     ]);
 
     exit;
@@ -38,7 +38,7 @@ if ($nome === "" || $categoria === "" || $preco === "" || $quantidade === "") {
 //Retornar sucesso 
 http_response_code(200);
 
-echo json_encode ([
+echo json_encode([
     "sucesso" => true,
     "mensagem" => "Produto cadastrado com sucesso!",
     "produto" => [
