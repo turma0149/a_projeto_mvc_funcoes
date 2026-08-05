@@ -20,6 +20,68 @@
 
 _________________________________ até aqui validadado ___________________________
 
+parte 2 validação e máscara
+// PROJETO USANDO JQUERY
+
+$(document).ready(function () {
+
+    // Aplica as máscaras nos campos
+    aplicarMascaras();
+
+    // Configura a validação e o envio
+    validarFormulario();
+
+});
+
+function aplicarMascaras() {
+
+    // Preço no formato brasileiro
+    // Exemplo: 1.234,56
+    $("#preco").mask("000.000.000,00", {
+        reverse: true
+    });
+
+    // Permite até 6 números
+    $("#quantidade").mask("000000");
+
+}
+
+function validarFormulario() {
+
+    // Seleciona a div responsável pelas mensagens
+    const mensagem = document.getElementById("mensagem");
+
+    // Configura o jQuery Validation
+    $("#formFuncionario").validate({
+        // Regras de validação
+        rules: {
+        },        
+        // Mensagens em português
+        messages: {
+        }, 
+        // Mensagens de erro
+        errorPlacement: function (error, element) {
+        },
+        // Executado quando o campo está inválido
+        highlight: function (element) {
+        },
+        // Executado quando o campo está válido
+        unhighlight: function (element) {
+        },
+        // Executado somente quando todos os campos forem válidos
+        submitHandler: async function (formulario) {
+            //de fato envia o formulário para controler
+        }
+        
+
+
+    });
+}
+
+
+
+
+
  
  
 https://github.com/turma0149/ 
