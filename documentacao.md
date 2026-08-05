@@ -1,90 +1,76 @@
-# Roteiro de execução do projeto
- 1- Criar as pastas
- 2- Criar arquivo documentacao.md
- 3- Criar arquivo index.php
-   -> para chamar rotas 
- 4- Criar arquivo routes.php
-   -> Gerar o php das rotas válidas
- 5- Criar a view do código 404
- 6- Criar a view de produtos/clientes/funcionarios
- 7- Criar o script de produtos/clientes/funcionarios
- 8- Criar o controller de produto/cliente/funcionarios
- 9- Criar o css de de produtos/clientes/funcionarios
+# Roteiro de execução do projeto - Entendendo MVC
 
+1- Criar as pastas
+2- Criar arquivo documentacao.md
+3- Criar arquivo index.php
+-> para chamar rotas
+4- Criar arquivo routes.php
+-> Gerar o php das rotas válidas
+5- Criar a view do código 404
+6- Criar a view de produtos/clientes/funcionarios
+7- Criar o script de produtos/clientes/funcionarios
+8- Criar o controller de produto/cliente/funcionarios
+9- Criar o css de de produtos/clientes/funcionarios
 
- Exercício: Usando o roteiro abaixo crie um sistema capaz de armazenar informações de 
-  - nome do projeto: b_projeto_mvc_clinica
-	- Médico (Nome, cpf, crm, email, telefone)
-  - Cliente (Nome, cpf, email, telefone)
-	- Agenda (crmMedico, cpfCliente, data, horário)
+Exercício: Usando o roteiro abaixo crie um sistema capaz de armazenar informações de
 
-_________________________________ até aqui validadado ___________________________
+- nome do projeto: b_projeto_mvc_clinica
+  - Médico (Nome, cpf, crm, email, telefone)
+- Cliente (Nome, cpf, email, telefone)
+  - Agenda (crmMedico, cpfCliente, data, horário)
 
-parte 2 validação e máscara
+# Roteiro de execução do projeto - Validando dados do lado cliente e adicionando máscara
+
+```javascript
 // PROJETO USANDO JQUERY
 
 $(document).ready(function () {
+  // Aplica as máscaras nos campos
+  aplicarMascaras();
 
-    // Aplica as máscaras nos campos
-    aplicarMascaras();
-
-    // Configura a validação e o envio
-    validarFormulario();
-
+  // Configura a validação e o envio
+  validarFormulario();
 });
 
 function aplicarMascaras() {
+  // Preço no formato brasileiro
+  // Exemplo: 1.234,56
+  $("#preco").mask("000.000.000,00", {
+    reverse: true,
+  });
 
-    // Preço no formato brasileiro
-    // Exemplo: 1.234,56
-    $("#preco").mask("000.000.000,00", {
-        reverse: true
-    });
-
-    // Permite até 6 números
-    $("#quantidade").mask("000000");
-
+  // Permite até 6 números
+  $("#quantidade").mask("000000");
 }
 
 function validarFormulario() {
+  // Seleciona a div responsável pelas mensagens
+  const mensagem = document.getElementById("mensagem");
 
-    // Seleciona a div responsável pelas mensagens
-    const mensagem = document.getElementById("mensagem");
+  // Configura o jQuery Validation
+  $("#formFuncionario").validate({
+    // Criar regras de validação
+    rules: {},
 
-    // Configura o jQuery Validation
-    $("#formFuncionario").validate({
-        // Regras de validação
-        rules: {
-        },        
-        // Mensagens em português
-        messages: {
-        }, 
-        // Mensagens de erro
-        errorPlacement: function (error, element) {
-        },
-        // Executado quando o campo está inválido
-        highlight: function (element) {
-        },
-        // Executado quando o campo está válido
-        unhighlight: function (element) {
-        },
-        // Executado somente quando todos os campos forem válidos
-        submitHandler: async function (formulario) {
-            //de fato envia o formulário para controler
-        }
-        
+    // Colocar as mensagens em português
+    messages: {},
 
+    // Retornar as mensagens de erro
+    errorPlacement: function (error, element) {},
 
-    });
+    // Executado quando o campo está INVÁLIDO
+    highlight: function (element) {},
+
+    // Executado quando o campo está VÁLIDO
+    unhighlight: function (element) {},
+
+    // Executado somente quando todos os campos forem válidos
+    submitHandler: async function (formulario) {
+      // ---->>> AQUI É ONDE ENVIAMOS OS DADOS PARA O BACK-END (CONTROLLER)
+    },
+  });
 }
-
-
-
-
-
- 
- 
-https://github.com/turma0149/ 
+```
 
 # MVC com PHP
 
@@ -94,9 +80,8 @@ Ao final deste conteúdo você será capaz de:
 
 - Entender o padrão MVC
   - 1- v - view - frontend (html, css, js) - requisição
-  - 2- c - controller - php no sentido de negócios 
-  - 3- m - model - banco de dados 
-  
+  - 2- c - controller - php no sentido de negócios
+  - 3- m - model - banco de dados
 - Framework de PHP - Laravel e Codeigniter
 
 - Navegar entre páginas utilizando rotas
@@ -122,8 +107,8 @@ O sistema será capaz de:
 # Estrutura do Projeto
 
 - assets/
-   - css/
-   - js/
+  - css/
+  - js/
 - config/
 - controllers/
 - layout
@@ -133,19 +118,18 @@ O sistema será capaz de:
 - index.php
 - routes.php
 
-| Arquivo/Pasta    | Responsabilidade                                                                            |
-|---------------   |---------------------------------------------------------------------------------------------|
-| **assets/**      | Armazena arquivos utilizados pela interface do sistema.                                     |
-| **assets/css/**  | Contém os arquivos de estilos (CSS).                                                        |
-| **assets/js/**   | Contém os arquivos JavaScript da aplicação.                                                 |
-| **config/**      | Contém arquivos de configuração: conexão com o database, constantes e configurações gerais. |
-| **controllers/** | Recebe as requisições, valida os dados, chama o Model e retorna uma resposta.               |
-| **models/**      | Manipula os dados da aplicação e realiza operações no banco de dados.                       |
-| **views/**       | Contém as páginas exibidas ao usuário (HTML, CSS e JavaScript).                             |
-| **documentacao/**| Contém algumas explicações para o projeto.                                                  |
-| **index.php**    | Porta de entrada da aplicação. Carrega o layout principal e inicia o sistema.               |
-| **routes.php**   | Analisa a URL e define qual View será carregada.                                            |
-
+| Arquivo/Pasta     | Responsabilidade                                                                            |
+| ----------------- | ------------------------------------------------------------------------------------------- |
+| **assets/**       | Armazena arquivos utilizados pela interface do sistema.                                     |
+| **assets/css/**   | Contém os arquivos de estilos (CSS).                                                        |
+| **assets/js/**    | Contém os arquivos JavaScript da aplicação.                                                 |
+| **config/**       | Contém arquivos de configuração: conexão com o database, constantes e configurações gerais. |
+| **controllers/**  | Recebe as requisições, valida os dados, chama o Model e retorna uma resposta.               |
+| **models/**       | Manipula os dados da aplicação e realiza operações no banco de dados.                       |
+| **views/**        | Contém as páginas exibidas ao usuário (HTML, CSS e JavaScript).                             |
+| **documentacao/** | Contém algumas explicações para o projeto.                                                  |
+| **index.php**     | Porta de entrada da aplicação. Carrega o layout principal e inicia o sistema.               |
+| **routes.php**    | Analisa a URL e define qual View será carregada.                                            |
 
 # URL
 
@@ -156,7 +140,7 @@ Exemplo: **http://localhost/projeto/index.php?page=produtos**
 Partes da URL
 
 | Parte          | Significado       |
-|--------        |-------------      |
+| -------------- | ----------------- |
 | localhost      | Servidor          |
 | projeto        | Pasta             |
 | index.php      | Arquivo           |
@@ -198,15 +182,14 @@ require "routes.php";
 1- Recebe o parâmetro enviado pela URL: **?page=produtos**
 2- Mostra views/produto.php
 3- Caso a página não exista
-   mostra: views/404.php
-
-
+mostra: views/404.php
 
 # Fluxo Inicial
+
 Usuário -> URL -> index.php -> routes.php -> Direciona para View
 
-
 # View
+
 A View é a interface do sistema.
 
 Pode conter:
@@ -217,7 +200,6 @@ Pode conter:
 - JavaScript
 
 A View não possui regras de negócio.
-
 
 # Formulário
 
@@ -278,7 +260,7 @@ dados.get("preco");
 O `fetch()` envia dados para outro arquivo sem recarregar a página.
 
 ```javascript
-fetch("controllers/ProdutoController.php")
+fetch("controllers/ProdutoController.php");
 ```
 
 Fluxo
@@ -305,8 +287,8 @@ Exemplo
 
 ```json
 {
-    "sucesso": true,
-    "mensagem": "Produto cadastrado!"
+  "sucesso": true,
+  "mensagem": "Produto cadastrado!"
 }
 ```
 
@@ -430,25 +412,25 @@ A View nunca acessa diretamente o banco de dados.
 
 Cada camada possui uma responsabilidade.
 
-| Camada | Responsabilidade |
-|--------|-------------------|
-| Model | Manipular os dados |
-| View | Exibir a interface |
+| Camada     | Responsabilidade          |
+| ---------- | ------------------------- |
+| Model      | Manipular os dados        |
+| View       | Exibir a interface        |
 | Controller | Controlar o processamento |
 
 ---
 
 # Responsabilidade dos Arquivos
 
-| Arquivo | Responsabilidade |
-|---------|------------------|
-| index.php | Inicia a aplicação |
+| Arquivo    | Responsabilidade                  |
+| ---------- | --------------------------------- |
+| index.php  | Inicia a aplicação                |
 | routes.php | Define qual página será carregada |
-| View | Interface do usuário |
-| JavaScript | Envia e recebe dados |
-| Controller | Processa a requisição |
-| Model | Acessa o banco de dados |
-| Banco | Armazena os dados |
+| View       | Interface do usuário              |
+| JavaScript | Envia e recebe dados              |
+| Controller | Processa a requisição             |
+| Model      | Acessa o banco de dados           |
+| Banco      | Armazena os dados                 |
 
 ---
 

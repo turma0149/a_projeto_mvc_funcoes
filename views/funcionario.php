@@ -15,15 +15,8 @@
                 <label for="nome">Nome</label>
 
                 <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="bi bi-person"></i>
-                    </span>
-
-                    <input
-                        type="text"
-                        id="nome"
-                        name="nome"
-                        class="form-control">
+                    <span class="input-group-text"> <i class="bi bi-person"></i> </span>
+                    <input type="text" id="nome" name="nome" class="form-control">
 
                     <div class="invalid-feedback"></div>
                     <div class="valid-feedback"></div>
@@ -37,15 +30,8 @@
                 <label for="cnpj">CNPJ</label>
 
                 <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="bi bi-building"></i>
-                    </span>
-
-                    <input
-                        type="text"
-                        id="cnpj"
-                        name="cnpj"
-                        class="form-control">
+                    <span class="input-group-text"> <i class="bi bi-building"></i> </span>
+                    <input type="text" id="cnpj" name="cnpj" class="form-control">
 
                     <div class="invalid-feedback"></div>
                     <div class="valid-feedback"></div>
@@ -59,15 +45,8 @@
                 <label for="regFunc">Registro do Funcionário</label>
 
                 <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="bi bi-card-text"></i>
-                    </span>
-
-                    <input
-                        type="text"
-                        id="regFunc"
-                        name="regFunc"
-                        class="form-control">
+                    <span class="input-group-text"> <i class="bi bi-card-text"></i> </span>
+                    <input type="text" id="regFunc" name="regFunc" class="form-control">
 
                     <div class="invalid-feedback"></div>
                     <div class="valid-feedback"></div>
@@ -81,15 +60,8 @@
                 <label for="pis">PIS</label>
 
                 <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="bi bi-credit-card-2-front"></i>
-                    </span>
-
-                    <input
-                        type="text"
-                        id="pis"
-                        name="pis"
-                        class="form-control">
+                    <span class="input-group-text"> <i class="bi bi-credit-card-2-front"></i> </span>
+                    <input type="text" id="pis" name="pis" class="form-control">
 
                     <div class="invalid-feedback"></div>
                     <div class="valid-feedback"></div>
@@ -104,14 +76,10 @@
 
         </form>
 
-
-
         <!-- Mensagem de Retorno -->
         <div id="mensagem" class="alert d-none mt-3"> </div>
 
     </div>
-
-
 </section>
 
 <!-- jQuery -->
