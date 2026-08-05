@@ -22,6 +22,11 @@ function validarFormulario() {
   // Seleciona a div responsável pelas mensagens
   const mensagem = document.getElementById("mensagem");
 
+  // Impede o formulário de recarregar a página
+  $("#formFuncionario").on("submit", function (evento) {
+    evento.preventDefault();
+  });
+
   // Configura o jQuery Validation
   $("#formFuncionario").validate({
     // Regras de validação
