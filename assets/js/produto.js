@@ -35,16 +35,13 @@ function validarFormulario() {
         required: true,
         minlength: 3,
       },
-
       categoria: {
         required: true,
         minlength: 3,
       },
-
       preco: {
         required: true,
       },
-
       quantidade: {
         required: true,
         digits: true,
@@ -58,16 +55,13 @@ function validarFormulario() {
         required: "Informe o nome do produto.",
         minlength: "O nome deve ter pelo menos 3 caracteres.",
       },
-
       categoria: {
         required: "Informe a categoria do produto.",
         minlength: "A categoria deve ter pelo menos 3 caracteres.",
       },
-
       preco: {
         required: "Informe o preço do produto.",
       },
-
       quantidade: {
         required: "Informe a quantidade.",
         digits: "Digite somente números inteiros.",
@@ -100,7 +94,6 @@ function validarFormulario() {
 
       /*
        * Converte o preço:
-       *
        * Formato exibido: 1.234,56
        * Formato enviado: 1234.56
        */
@@ -109,13 +102,11 @@ function validarFormulario() {
         .replace(/\./g, "")
         .replace(",", ".");
 
+      //Mostra os dados no console
+      //console.table(Object.fromEntries(dados.entries()));
+
       // Substitui o preço mascarado pelo preço convertido
       dados.set("preco", precoConvertido);
-
-      // Mostra os dados no console
-      // console.table(
-      //     Object.fromEntries(dados.entries())
-      // );
 
       // Exibe mensagem enquanto envia
       mensagem.className = "alert alert-info mt-3";
@@ -134,9 +125,8 @@ function validarFormulario() {
         //console.log(resultado);
 
         // Verifica se ocorreu erro HTTP
-        if (!resposta.ok) {
+        if (!resposta.sucesso) {
           mensagem.className = "alert alert-danger mt-3";
-
           mensagem.textContent =
             resultado.mensagem ?? "Erro ao cadastrar produto.";
 
