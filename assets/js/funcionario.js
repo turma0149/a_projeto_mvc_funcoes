@@ -1,55 +1,93 @@
+// PROJETO USANDO JQUERY
 
-// Selecionar o formulário e a div de mensagens
-const form = document.getElementById("formFuncionario");
-const mensagem = document.getElementById("mensagem");
+$(document).ready(function () {
 
-// Executa quando o formulário é enviado
-form.addEventListener("submit", async function (evento) {
+    // Aplica as máscaras nos campos
+    aplicarMascaras();
 
-    // Impede o recarregamento da página
-    evento.preventDefault();
+    // Configura a validação e o envio
+    validarFormulario();
 
-    // Captura os dados do formulário
-    const dados = new FormData(form);
-
-    //Mostra (no console = f12) os dados do form em tabela
-    //console.table(Object.fromEntries(dados.entries()));
-    //console.log("simples");
-
-    // Exibe uma mensagem enquanto os dados são enviados
-    mensagem.className = "alert alert-info mt-3";
-    mensagem.textContent = "Enviando dados...";
-
-    try {
-        // Envia os dados para o Controller
-        const resposta = await fetch("controllers/FuncionarioController.php", {
-            method: "POST",
-            body: dados
-        });
-
-        // Converte a resposta JSON em objeto JavaScript
-        const resultado = await resposta.json();
-
-        console.log(resultado);
-
-        // Verifica o código HTTP (200..) da resposta
-        if (!resposta.ok) {
-            mensagem.className = "alert alert-danger mt-3";
-            mensagem.textContent = resultado.mensagem;
-            return;
-        }
-
-        // Exibe a mensagem de sucesso
-        mensagem.className = "alert alert-success mt-3";
-        mensagem.textContent = resultado.mensagem;
-
-        // Limpa o formulário
-        form.reset();
-
-    } catch (erro) {
-        mensagem.className = "alert alert-danger mt-3";
-        mensagem.textContent = "Erro ao enviar os dados para o controller funcionario";
-
-        console.log(erro);
-    }
 });
+
+function aplicarMascaras() {
+
+    // Preço no formato brasileiro
+    // Exemplo: 1.234,56
+    $("#preco").mask("000.000.000,00", {
+        reverse: true
+    });
+
+    // Permite até 6 números
+    $("#quantidade").mask("000000");
+
+}
+
+function validarFormulario() {
+
+    // Seleciona a div responsável pelas mensagens
+    const mensagem = document.getElementById("mensagem");
+
+    // Configura o jQuery Validation
+    $("#formFuncionario").validate({
+        // Regras de validação
+        rules: {
+            nome: {
+                required: true,
+                minlength: 3,
+                maxlength:100
+            }, 
+            cnpj: {
+                required: true,
+                minlength: 18,
+                maxlength: 18
+            },
+            regFunc: {
+               required: true 
+            },
+            pis: {
+                required: true,
+                minlength: 14,
+                maxlength: 14 
+            } 
+        },        
+        // Mensagens em português
+        messages: {
+            nome: {
+                required: "Informe o nome do produto.",
+                minlength: "O nome deve ter pelo menos 3 caracteres.",
+                maxlength: "O nome deve ter no máximo 100 caracteres."
+            },
+            cnpj: {
+                required: "Informe o CNPJ do funcionário.",
+                minlength: "O CNPJ deve ter 18 caracteres.",
+                maxlength: "O CNPJ deve ter 18 caracteres."
+            },
+            regFunc: {
+                required: "Informe o registro do funcionário.",
+            },
+            pis: {
+                required: "Informe o PIS do funcionário.",
+                minlength: "O PIS deve ter 18 caracteres.",
+                maxlength: "O PIS deve ter 18 caracteres."
+            } 
+        }, 
+        // Mensagens de erro
+        errorPlacement: function (error, element) {
+        },
+        // Executado quando o campo está inválido
+        highlight: function (element) {
+        },
+        // Executado quando o campo está válido
+        unhighlight: function (element) {
+        },
+        // Executado somente quando todos os campos forem válidos
+        submitHandler: async function (formulario) {
+            //de fato envia o formulário para controler
+        }
+        
+
+
+    });
+}
+

@@ -1,4 +1,4 @@
-//TODO: PROJETO USANDO JQUERY
+// PROJETO USANDO JQUERY
 
 $(document).ready(function () {
 
@@ -9,7 +9,6 @@ $(document).ready(function () {
     validarFormulario();
 
 });
-
 
 function aplicarMascaras() {
 
@@ -80,12 +79,8 @@ function validarFormulario() {
             }
         },
 
-        // Não cria novas mensagens de erro
+        // Mensagens de erro
         errorPlacement: function (error, element) {
-
-            // As mensagens já estão no HTML
-            // dentro das divs invalid-feedback
-
             element
             .closest(".input-group")
             .find(".invalid-feedback")
@@ -132,9 +127,9 @@ function validarFormulario() {
             dados.set("preco", precoConvertido);
 
             // Mostra os dados no console
-            console.table(
-                Object.fromEntries(dados.entries())
-            );
+            // console.table(
+            //     Object.fromEntries(dados.entries())
+            // );
 
             // Exibe mensagem enquanto envia
             mensagem.className = "alert alert-info mt-3";
@@ -154,7 +149,7 @@ function validarFormulario() {
                 // Converte a resposta JSON
                 const resultado = await resposta.json();
 
-                console.log(resultado);
+                //console.log(resultado);
 
                 // Verifica se ocorreu erro HTTP
                 if (!resposta.ok) {

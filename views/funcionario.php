@@ -22,13 +22,13 @@
 
             <!-- RF -->
             <div class="mb-3">
-                <label for="regFunc"> E-mail </label>
+                <label for="regFunc"> Registro Funcionário </label>
                 <input type="text" id="regFunc" name="regFunc" class="form-control">
             </div>
 
             <!-- PIS -->
             <div class="mb-3">
-                <label for="pis"> Telefone </label>
+                <label for="pis"> PIS </label>
                 <input type="text" id="pis" name="pis" class="form-control">
             </div>
 
@@ -46,5 +46,15 @@
 
 </section>
 
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- jQuery Validation -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+
+<!-- jQuery Mask -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
 <!-- script da página -->
 <script src="assets/js/funcionario.js"></script>
+
