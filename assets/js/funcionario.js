@@ -68,8 +68,8 @@ function validarFormulario() {
             },
             pis: {
                 required: "Informe o PIS do funcionário.",
-                minlength: "O PIS deve ter 18 caracteres.",
-                maxlength: "O PIS deve ter 18 caracteres."
+                minlength: "O PIS deve ter 14 caracteres.",
+                maxlength: "O PIS deve ter 14 caracteres."
             } 
         }, 
         // Mensagens de erro
