@@ -42,29 +42,28 @@
                     <div class="valid-feedback"></div>
                 </div>
             </div>
+
+
+            <!-- telefone -->
+            <div class="mb-3">
+                <label for="telefone"> Telefone </label>
+                <div class="input-group">
+                    <span class="input-group-text"> <i class="bi bi-person"></i></span>
+                    <input type="text" id="telefone" name="telefone" class="form-control">
+
+                    <div class="invalid-feedback"></div>
+                    <div class="valid-feedback"></div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Cadastrar
+            </button>
+
         </form>
-    </div>
 
-    <!-- telefone -->
-    <div class="mb-3">
-        <label for="telefone"> Telefone </label>
-        <div class="input-group">
-            <span class="input-group-text"> <i class="bi bi-person"></i></span>
-            <input type="text" id="telefone" name="telefone" class="form-control">
-
-            <div class="invalid-feedback"></div>
-            <div class="valid-feedback"></div>
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-primary w-100">
-        Cadastrar
-    </button>
-
-    </form>
-
-    <!-- Mensagem de Retorno -->
-    <div id="mensagem" class="alert d-none mt-3"> </div>
+        <!-- Mensagem de Retorno -->
+        <div id="mensagem" class="alert d-none mt-3"> </div>
 
     </div>
 
