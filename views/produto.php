@@ -9,8 +9,7 @@
              <form id="formProduto">
 
                  <!-- Nome -->
-                 <div class="mb-3">
-                     
+                 <div class="mb-3">                     
                     <label for="nome"> Nome </label>
                     
                     <div class="input-group">

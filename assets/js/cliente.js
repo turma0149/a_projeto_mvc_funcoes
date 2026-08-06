@@ -1,4 +1,5 @@
 // PROJETO USANDO JQUERY
+
 $(document).ready(function () {
   // Aplica as máscaras nos campos
   aplicarMascaras();
@@ -8,14 +9,9 @@ $(document).ready(function () {
 });
 
 function aplicarMascaras() {
-  // CNPJ no formato: 00.000.000/0000-00
-  $("#cnpj").mask("00.000.000/0000-00");
-
-  // PIS no formato: 000.00000.00-0
-  $("#pis").mask("000.00000.00-0");
-
-  // REG no formato: 0-0000
-  $("#regFunc").mask("0-0000");
+  // Telefone no formato: (31) 99999-9999
+  $("#telefone").mask("(00) 00000-0000");
+  $("#cpf").mask("000.000.000-00");
 }
 
 function validarFormulario() {
@@ -23,12 +19,12 @@ function validarFormulario() {
   const mensagem = document.getElementById("mensagem");
 
   // Impede o formulário de recarregar a página
-  $("#formFuncionario").on("submit", function (evento) {
+  $("#formCliente").on("submit", function (evento) {
     evento.preventDefault();
   });
 
   // Configura o jQuery Validation
-  $("#formFuncionario").validate({
+  $("#formCliente").validate({
     // Regras de validação
     rules: {
       nome: {
@@ -37,45 +33,44 @@ function validarFormulario() {
         maxlength: 100,
       },
 
-      cnpj: {
-        required: true,
-        minlength: 18,
-        maxlength: 18,
-      },
-
-      regFunc: {
-        required: true,
-      },
-
-      pis: {
+      cpf: {
         required: true,
         minlength: 14,
         maxlength: 14,
+      },
+
+      email: {
+        required: true,
+        email: true,
+      },
+
+      telefone: {
+        required: true,
+        minlength: 15,
+        maxlength: 15,
       },
     },
 
     // Mensagens em português
     messages: {
       nome: {
-        required: "Informe o nome do funcionário.",
+        required: "Informe o nome do cliente.",
         minlength: "O nome deve ter pelo menos 3 caracteres.",
         maxlength: "O nome deve ter no máximo 100 caracteres.",
       },
-
-      cnpj: {
-        required: "Informe o CNPJ do funcionário.",
-        minlength: "O CNPJ deve ter 18 caracteres.",
-        maxlength: "O CNPJ deve ter 18 caracteres.",
+      cpf: {
+        required: "Informe o CPF do cliente.",
+        minlength: "O CPF deve ter 14 caracteres.",
+        maxlength: "O CPF deve ter 14 caracteres.",
       },
-
-      regFunc: {
-        required: "Informe o registro do funcionário.",
+      email: {
+        required: "Informe o e-mail do cliente.",
+        email: "Email nesse formato: email@email.com",
       },
-
-      pis: {
-        required: "Informe o PIS do funcionário.",
-        minlength: "O PIS deve ter 14 caracteres.",
-        maxlength: "O PIS deve ter 14 caracteres.",
+      telefone: {
+        required: "Informe o telefone do cliente.",
+        minlength: "O telefone deve ter 15 caracteres.",
+        maxlength: "O telefone deve ter 15 caracteres.",
       },
     },
 
@@ -102,19 +97,15 @@ function validarFormulario() {
       // Captura os dados do formulário
       const dados = new FormData(formulario);
 
-      // Remove a máscara do CNPJ
-      const cnpj = $("#cnpj").val().replace(/\D/g, "");
+      // Remove a máscara do CPF
+      const cpf = $("#cpf").val().replace(/\D/g, "");
 
-      // Remove a máscara do PIS
-      const pis = $("#pis").val().replace(/\D/g, "");
-
-      // Remove a máscara do Registro
-      const regFunc = $("#regFunc").val().replace(/\D/g, "");
+      // Remove a máscara do Telefone
+      const telefone = $("#telefone").val().replace(/\D/g, "");
 
       // Atualiza os valores no FormData
-      dados.set("cnpj", cnpj);
-      dados.set("pis", pis);
-      dados.set("regFunc", regFunc);
+      dados.set("cpf", cpf);
+      dados.set("telefone", telefone);
 
       // Mostra os dados no console
       // console.table(
@@ -127,7 +118,7 @@ function validarFormulario() {
 
       try {
         // Envia os dados para o Controller
-        const resposta = await fetch("controllers/FuncionarioController.php", {
+        const resposta = await fetch("controllers/ClienteController.php", {
           method: "POST",
           body: dados,
         });
@@ -142,7 +133,7 @@ function validarFormulario() {
           mensagem.className = "alert alert-danger mt-3";
 
           mensagem.textContent =
-            resultado.mensagem ?? "Erro ao cadastrar funcionário.";
+            resultado.mensagem ?? "Erro ao cadastrar cliente.";
 
           return;
         }
@@ -159,7 +150,7 @@ function validarFormulario() {
       } catch (erro) {
         mensagem.className = "alert alert-danger mt-3";
         mensagem.textContent =
-          "Erro ao enviar os dados para o controller de funcionário.";
+          "Erro ao enviar os dados para o controller de cliente.";
 
         console.error(erro);
       }
@@ -167,7 +158,7 @@ function validarFormulario() {
   });
 
   // Quando o formulário for limpo
-  $("#formFuncionario").on("reset", function () {
+  $("#formCliente").on("reset", function () {
     // Remove as classes de validação
     $(this).find(".form-control").removeClass("is-valid is-invalid");
   });

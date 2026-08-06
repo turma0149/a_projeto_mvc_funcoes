@@ -14,9 +14,9 @@
                 <div class="input-group">
                     <span class="input-group-text"> <i class="bi bi-box"></i> </span>
                     <input type="text" id="nome" name="nome" class="form-control">
+                    <div class="invalid-feedback"></div>
+                    <div class="valid-feedback"></div>
                 </div>
-                <div class="invalid-feedback"></div>
-                <div class="valid-feedback"></div>
             </div>
 
             <!-- CPF -->
@@ -25,9 +25,10 @@
                 <div class="input-group">
                     <span class="input-group-text"> <i class="bi bi-person"></i></span>
                     <input type="text" id="cpf" name="cpf" class="form-control">
+
+                    <div class="invalid-feedback"></div>
+                    <div class="valid-feedback"></div>
                 </div>
-                <div class="invalid-feedback"></div>
-                <div class="valid-feedback"></div>
             </div>
 
             <!-- e-mail -->
@@ -36,9 +37,10 @@
                 <div class="input-group">
                     <span class="input-group-text"> <i class="bi bi-person"></i></span>
                     <input type="text" id="email" name="email" class="form-control">
+
+                    <div class="invalid-feedback"></div>
+                    <div class="valid-feedback"></div>
                 </div>
-                <div class="invalid-feedback"></div>
-                <div class="valid-feedback"></div>
             </div>
         </form>
     </div>
@@ -46,7 +48,13 @@
     <!-- telefone -->
     <div class="mb-3">
         <label for="telefone"> Telefone </label>
-        <input type="text" id="telefone" name="telefone" class="form-control">
+        <div class="input-group">
+            <span class="input-group-text"> <i class="bi bi-person"></i></span>
+            <input type="text" id="telefone" name="telefone" class="form-control">
+
+            <div class="invalid-feedback"></div>
+            <div class="valid-feedback"></div>
+        </div>
     </div>
 
     <button type="submit" class="btn btn-primary w-100">
@@ -62,6 +70,15 @@
 
 
 </section>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- jQuery Validation -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+
+<!-- jQuery Mask -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
 <!-- script da página -->
 <script src="assets/js/cliente.js"></script>
