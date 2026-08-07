@@ -4,13 +4,14 @@
 
 //definir páginas válidas no projeto
 $paginasValidas = [
+    "home" => __DIR__ . "/views/home.php",
     "produtos" => __DIR__ . "/views/produto.php",
     "clientes" => __DIR__ . "/views/cliente.php",
     "funcionarios" => __DIR__ . "/views/funcionario.php",
 ];
 
 // Capturar a página informada na url 
-$page = $_GET["page"] ?? "produtos"; //prod. ou cli. ou func.
+$page = $_GET["page"] ?? "home";
 
 //Verificar se a página existe
 if (array_key_exists($page, $paginasValidas)) {

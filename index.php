@@ -18,7 +18,7 @@
 <body class="bg-light d-flex flex-column min-vh-100">
 
     <!-- Página atual -->
-    <?php $page = $_GET['page'] ?? 'produtos'; ?>
+    <?php $page = $_GET['page'] ?? 'home'; ?>
 
     <!-- Cabeçalho -->
     <header class="bg-dark text-white py-3">
@@ -27,13 +27,18 @@
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
 
                 <h1 class="h3 mb-3 mb-md-0">
-                    Sistema de Cadastros
+                    <a href="index.php?page=home" class="text-white text-decoration-none">
+                        Sistema de Cadastros
+                    </a>
                 </h1>
 
                 <!-- Menu principal -->
                 <nav class="nav">
 
-                    <!-- TODO: PHP para indicar página ativa -->
+                    <a href="index.php?page=home"
+                        class="nav-link <?= $page === 'home' ? 'text-white fw-bold' : 'text-white-50' ?>">
+                        Início
+                    </a>
 
                     <a href="index.php?page=produtos"
                         class="nav-link <?= $page === 'produtos' ? 'text-white fw-bold' : 'text-white-50' ?>">
