@@ -31,10 +31,10 @@ function validarFormulario() {
   $("#formProduto").validate({
     // Regras de validação
     rules: {
-      nome: {
-        required: true,
-        minlength: 3,
-      },
+      // nome: {
+      //   required: true,
+      //   minlength: 3,
+      // },
       categoria: {
         required: true,
         minlength: 3,
@@ -76,22 +76,12 @@ function validarFormulario() {
 
     // Executado quando o campo está inválido
     highlight: function (element) {
-      const campo = $(element);
-      const grupo = campo.closest(".mb-3");
-
-      campo.removeClass("is-valid").addClass("is-invalid");
-
-      grupo.find(".valid-feedback").text("");
+      $(element).removeClass("is-valid").addClass("is-invalid");
     },
 
     // Executado quando o campo está válido
     unhighlight: function (element) {
-      const campo = $(element);
-      const grupo = campo.closest(".mb-3");
-
-      campo.removeClass("is-invalid").addClass("is-valid");
-
-      grupo.find(".invalid-feedback").text("");
+      $(element).removeClass("is-invalid").addClass("is-valid");
     },
 
     // Executado somente quando todos os campos forem válidos
