@@ -51,11 +51,6 @@
                 <!-- Menu principal -->
                 <nav class="nav">
 
-                    <a href="index.php?page=home"
-                        class="nav-link <?= $page === 'home' ? 'text-white fw-bold' : 'text-white-50' ?>">
-                        Início
-                    </a>
-
                     <a href="index.php?page=produtos"
                         class="nav-link <?= $page === 'produtos' ? 'text-white fw-bold' : 'text-white-50' ?>">
                         Produtos
@@ -69,6 +64,11 @@
                     <a href="index.php?page=funcionarios"
                         class="nav-link <?= $page === 'funcionarios' ? 'text-white fw-bold' : 'text-white-50' ?>">
                         Funcionários
+                    </a>
+
+                     <a href="index.php?page=landing"
+                        class="nav-link <?= $page === 'landing' ? 'text-white fw-bold' : 'text-white-50' ?>">
+                        Sair
                     </a>
 
                 </nav>
