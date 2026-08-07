@@ -1,4 +1,5 @@
 // PROJETO USANDO JQUERY
+
 $(document).ready(function () {
   // Aplica as máscaras nos campos
   aplicarMascaras();
@@ -14,7 +15,7 @@ function aplicarMascaras() {
   // PIS no formato: 000.00000.00-0
   $("#pis").mask("000.00000.00-0");
 
-  // REG no formato: 0-0000
+  // Registro no formato: 0-0000
   $("#regFunc").mask("0-0000");
 }
 
@@ -64,8 +65,8 @@ function validarFormulario() {
 
       cnpj: {
         required: "Informe o CNPJ do funcionário.",
-        minlength: "O CNPJ deve ter 18 caracteres.",
-        maxlength: "O CNPJ deve ter 18 caracteres.",
+        minlength: "Informe um CNPJ válido.",
+        maxlength: "Informe um CNPJ válido.",
       },
 
       regFunc: {
@@ -74,17 +75,14 @@ function validarFormulario() {
 
       pis: {
         required: "Informe o PIS do funcionário.",
-        minlength: "O PIS deve ter 14 caracteres.",
-        maxlength: "O PIS deve ter 14 caracteres.",
+        minlength: "Informe um PIS válido.",
+        maxlength: "Informe um PIS válido.",
       },
     },
 
     // Mensagens de erro
     errorPlacement: function (error, element) {
-      element
-        .closest(".input-group")
-        .find(".invalid-feedback")
-        .text(error.text());
+      element.closest(".mb-3").find(".invalid-feedback").text(error.text());
     },
 
     // Executado quando o campo está inválido
@@ -102,24 +100,34 @@ function validarFormulario() {
       // Captura os dados do formulário
       const dados = new FormData(formulario);
 
-      // Remove a máscara do CNPJ
+      /*
+       * Remove a máscara do CNPJ:
+       * Formato exibido: 00.000.000/0000-00
+       * Formato enviado: 00000000000000
+       */
       const cnpj = $("#cnpj").val().replace(/\D/g, "");
 
-      // Remove a máscara do PIS
+      /*
+       * Remove a máscara do PIS:
+       * Formato exibido: 000.00000.00-0
+       * Formato enviado: 00000000000
+       */
       const pis = $("#pis").val().replace(/\D/g, "");
 
-      // Remove a máscara do Registro
+      /*
+       * Remove a máscara do registro:
+       * Formato exibido: 0-0000
+       * Formato enviado: 00000
+       */
       const regFunc = $("#regFunc").val().replace(/\D/g, "");
 
-      // Atualiza os valores no FormData
+      // Substitui os valores mascarados pelos valores sem máscara
       dados.set("cnpj", cnpj);
       dados.set("pis", pis);
       dados.set("regFunc", regFunc);
 
       // Mostra os dados no console
-      // console.table(
-      //     Object.fromEntries(dados.entries())
-      // );
+      console.table(Object.fromEntries(dados.entries()));
 
       // Exibe mensagem enquanto envia
       mensagem.className = "alert alert-info mt-3";
@@ -141,8 +149,21 @@ function validarFormulario() {
         if (!resposta.ok) {
           mensagem.className = "alert alert-danger mt-3";
 
-          mensagem.textContent =
-            resultado.mensagem ?? "Erro ao cadastrar funcionário.";
+          let conteudo = `<strong>${resultado.mensagem}</strong>`;
+
+          if (resultado.erros) {
+            conteudo += "<ul class='mb-0 mt-2'>";
+
+            Object.entries(resultado.erros).forEach(function ([campo, erros]) {
+              erros.forEach(function (erro) {
+                conteudo += `<li>${erro}</li>`;
+              });
+            });
+
+            conteudo += "</ul>";
+          }
+
+          mensagem.innerHTML = conteudo;
 
           return;
         }
@@ -153,9 +174,6 @@ function validarFormulario() {
 
         // Limpa os campos
         formulario.reset();
-
-        // Remove as classes da validação
-        $(formulario).find(".form-control").removeClass("is-valid is-invalid");
       } catch (erro) {
         mensagem.className = "alert alert-danger mt-3";
         mensagem.textContent =
