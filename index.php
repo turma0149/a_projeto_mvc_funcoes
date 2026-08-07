@@ -22,15 +22,14 @@
     $page = $_GET["page"] ?? "landing";
 
     // Páginas que possuem HTML próprio
-    $paginasIndependentes = [
+    $paginasPublicas = [
         "landing" => __DIR__ . "/views/landing.php",
         "login" => __DIR__ . "/views/login.php",
     ];
 
-
     // Verifica se é uma página independente
-    if (array_key_exists($page, $paginasIndependentes)) {
-        require $paginasIndependentes[$page];
+    if (array_key_exists($page, $paginasPublicas)) {
+        require $paginasPublicas[$page];
         exit;
     }
 
@@ -66,7 +65,7 @@
                         Funcionários
                     </a>
 
-                     <a href="index.php?page=landing"
+                    <a href="index.php?page=landing"
                         class="nav-link <?= $page === 'landing' ? 'text-white fw-bold' : 'text-white-50' ?>">
                         Sair
                     </a>
