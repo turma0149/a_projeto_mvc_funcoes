@@ -9,9 +9,6 @@ require __DIR__ . "/../libs/Validator.php";
 // Cria o objeto validador
 $validator = new Validator($_POST);
 
-//Executa a função que contém as regras de validação
-validarCadastro($validator);
-
 //Verifica se a requisição é do tipo POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405); //405 - método não permitido
@@ -23,6 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
     exit;
 }
+
+//Executa a função que contém as regras de validação
+validarCadastro($validator);
 
 // -------->>> TODO: Aqui seria o banco de dados 
 
@@ -56,15 +56,25 @@ exit;
 
 function validarCadastro($validator)
 {
-    
-    //nome
-    $validator->required("nome", "Informe o nome.");
+    // Nome
+    $validator->required("nome", "Informe o nome do produto.");
     $validator->string("nome", "O nome deve ser um texto.");
-    $validator->minLength("nome", 3, "O nome deve ter  pelo menos 3 caracteres.");
-    $validator->maxLength("nome", 100, "O nome deve   ter no máximo 30 caracteres.");
+    $validator->minLength("nome", 3, "O nome deve ter pelo menos 3 caracteres.");
+    $validator->maxLength("nome", 100, "O nome deve ter no máximo 100 caracteres.");
 
-    //cpf
-    $validator->required("cpf", "Informe o nome.");
+    // Categoria
+    $validator->required("categoria", "Informe a categoria.");
+    $validator->string("categoria", "A categoria deve ser um texto.");
+    $validator->minLength("categoria", 3, "A categoria deve ter pelo menos 3 caracteres.");
+    $validator->maxLength("categoria", 100, "A categoria deve ter no máximo 100 caracteres.");
 
+    // Preço
+    $validator->required("preco", "Informe o preço.");
+    $validator->numeric("preco", "Informe um preço válido.");
+    $validator->min("preco", 0.01, "O preço deve ser maior que zero.");
 
+    // Quantidade
+    $validator->required("quantidade", "Informe a quantidade.");
+    $validator->integer("quantidade", "A quantidade deve ser um número inteiro.");
+    $validator->min("quantidade", 1, "A quantidade deve ser maior ou igual a 1.");
 }

@@ -35,18 +35,18 @@ function validarFormulario() {
       //   required: true,
       //   minlength: 3,
       // },
-      categoria: {
-        required: true,
-        minlength: 3,
-      },
-      preco: {
-        required: true,
-      },
-      quantidade: {
-        required: true,
-        digits: true,
-        min: 1,
-      },
+      // categoria: {
+      //   required: true,
+      //   minlength: 3,
+      // },
+      // preco: {
+      //   required: true,
+      // },
+      // quantidade: {
+      //   required: true,
+      //   digits: true,
+      //   min: 1,
+      // },
     },
 
     // Mensagens em português
@@ -147,8 +147,6 @@ function validarFormulario() {
         // Limpa os campos
         formulario.reset();
 
-        // Remove as classes da validação
-        $(formulario).find(".form-control").removeClass("is-valid is-invalid");
       } catch (erro) {
         mensagem.className = "alert alert-danger mt-3";
         mensagem.textContent =
