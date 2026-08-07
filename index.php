@@ -17,8 +17,24 @@
 
 <body class="bg-light d-flex flex-column min-vh-100">
 
-    <!-- Página atual -->
-    <?php $page = $_GET['page'] ?? 'home'; ?>
+    <?php
+    // Captura a página atual informada na URL
+    $page = $_GET["page"] ?? "landing";
+
+    // Páginas que possuem HTML próprio
+    $paginasIndependentes = [
+        "landing" => __DIR__ . "/views/landing.php",
+        "login" => __DIR__ . "/views/login.php",
+    ];
+
+
+    // Verifica se é uma página independente
+    if (array_key_exists($page, $paginasIndependentes)) {
+        require $paginasIndependentes[$page];
+        exit;
+    }
+
+    ?>
 
     <!-- Cabeçalho -->
     <header class="bg-dark text-white py-3">
