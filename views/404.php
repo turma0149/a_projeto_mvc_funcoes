@@ -10,8 +10,7 @@
             <img
                 src="assets/img/erro-404.png"
                 alt="Página não encontrada"
-                class="img-fluid imagem-404"
-            >
+                class="img-fluid imagem-404">
         </div>
 
         <!-- Conteúdo -->
@@ -40,9 +39,9 @@
             <!-- Botões -->
             <div class="mt-4">
 
-                <a href="index.php?page=produtos" class="btn btn-primary">
+                <a href="index.php?page=home" class="btn btn-primary">
                     <i class="bi bi-arrow-left me-2"></i>
-                    Voltar para produtos
+                    Voltar para home
                 </a>
 
                 <a href="index.php" class="btn btn-outline-primary ms-2">
