@@ -31,10 +31,10 @@ function validarFormulario() {
   $("#formProduto").validate({
     // Regras de validação
     rules: {
-      nome: {
-        required: true,
-        minlength: 3,
-      },
+      // nome: {
+      //   required: true,
+      //   minlength: 3,
+      // },
       categoria: {
         required: true,
         minlength: 3,
@@ -102,11 +102,11 @@ function validarFormulario() {
         .replace(/\./g, "")
         .replace(",", ".");
 
-      //Mostra os dados no console
-      //console.table(Object.fromEntries(dados.entries()));
-
       // Substitui o preço mascarado pelo preço convertido
       dados.set("preco", precoConvertido);
+
+      //Mostra os dados no console
+      console.table(Object.fromEntries(dados.entries()));
 
       // Exibe mensagem enquanto envia
       mensagem.className = "alert alert-info mt-3";
@@ -125,11 +125,22 @@ function validarFormulario() {
         //console.log(resultado);
 
         // Verifica se ocorreu erro HTTP
-        if (!resposta.ok) {
-          //TODO: alterar para sucesso
+        if (!resposta.sucesso) {
+          //TODO de ok para sucesso
+          //TODO
           mensagem.className = "alert alert-danger mt-3";
-          mensagem.textContent =
-            resultado.mensagem ?? "Erro ao cadastrar produto.";
+          let conteudo = `<strong>${resultado.mensagem}</strong>`;
+          if (resultado.erros) {
+            conteudo += "<ul class='mb-0 mt-2'>";
+            Object.entries(resultado.erros).forEach(function ([campo, erros]) {
+              erros.forEach(function (erro) {
+                conteudo += `<li>${erro}</li>`;
+              });
+            });
+            conteudo += "</ul>";
+          }
+
+          mensagem.innerHTML = conteudo;
 
           return;
         }

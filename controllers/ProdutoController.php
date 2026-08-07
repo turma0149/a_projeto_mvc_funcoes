@@ -4,7 +4,13 @@
 header("Content-Type: application/json; charset=utf-8");
 
 // Carrega a classe Validator.
-require_once __DIR__ . "/../libs/Validator.php";
+require __DIR__ . "/../libs/Validator.php";
+
+// Cria o objeto validador
+$validator = new Validator($_POST);
+
+//Executa a função que contém as regras de validação
+validarCadastro($validator);
 
 //Verifica se a requisição é do tipo POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -18,15 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-// Cria o objeto validador
-$validator = new Validator($_POST);
-
-//Executa a função que contém as regras de validação
-validarCadastro($validator);
-
-
 // -------->>> TODO: Aqui seria o banco de dados 
-
 
 //Verifica se tem erros
 if ($validator->fails()) {
@@ -54,15 +52,19 @@ echo json_encode([
 
 exit;
 
-
-
 // ------ Funções auxiliares ------------
-
 
 function validarCadastro($validator)
 {
+    
+    //nome
     $validator->required("nome", "Informe o nome.");
     $validator->string("nome", "O nome deve ser um texto.");
-    $validator->minLength("nome", 3, "O nome deve ter pelo menos 3 caracteres.");
-    $validator->maxLength("nome", 30, "O nome deve ter no máximo 30 caracteres.");
+    $validator->minLength("nome", 3, "O nome deve ter  pelo menos 3 caracteres.");
+    $validator->maxLength("nome", 100, "O nome deve   ter no máximo 30 caracteres.");
+
+    //cpf
+    $validator->required("cpf", "Informe o nome.");
+
+
 }
