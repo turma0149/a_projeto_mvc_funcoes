@@ -31,22 +31,22 @@ function validarFormulario() {
   $("#formProduto").validate({
     // Regras de validação
     rules: {
-      // nome: {
-      //   required: true,
-      //   minlength: 3,
-      // },
-      // categoria: {
-      //   required: true,
-      //   minlength: 3,
-      // },
-      // preco: {
-      //   required: true,
-      // },
-      // quantidade: {
-      //   required: true,
-      //   digits: true,
-      //   min: 1,
-      // },
+      nome: {
+        required: true,
+        minlength: 3,
+      },
+      categoria: {
+        required: true,
+        minlength: 3,
+      },
+      preco: {
+        required: true,
+      },
+      quantidade: {
+        required: true,
+        digits: true,
+        min: 1,
+      },
     },
 
     // Mensagens em português
