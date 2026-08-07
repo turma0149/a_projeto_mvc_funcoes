@@ -1,39 +1,46 @@
 # Projeto MVC com PHP, jQuery e Bootstrap
 
-> Documentação revisada de acordo com o estado atual do projeto.
+> Documentação atualizada com base na versão atual do projeto.
 
----
+------------------------------------------------------------------------
 
-# PARTE 1 — ROTEIRO DE EXECUÇÃO DO PROJETO
+# PARTE 1 --- PASSO A PASSO DO QUE FOI CONSTRUÍDO
 
 ## 1. Objetivo do projeto
 
-Construir um sistema didático de cadastros para compreender o fluxo de uma aplicação organizada no padrão MVC.
+O projeto foi criado para estudar, de forma didática, a organização de
+uma aplicação PHP inspirada no padrão MVC.
 
-O projeto possui atualmente:
+Até o momento foram implementados:
 
-- Página inicial;
-- Rotas;
-- Página 404;
-- Cadastro de produtos;
-- Cadastro de clientes;
-- Cadastro de funcionários;
-- Validação no frontend com jQuery Validation;
-- Máscaras com jQuery Mask;
-- Envio assíncrono com `fetch()`;
-- Controllers em PHP;
-- Validação no backend com a classe `Validator`;
-- Respostas padronizadas em JSON.
+-   Landing page pública;
+-   Página de login visual;
+-   Home da área administrativa;
+-   Rotas utilizando `$_GET`;
+-   Página 404;
+-   Cadastro de produtos;
+-   Cadastro de clientes;
+-   Cadastro de funcionários;
+-   Bootstrap e Bootstrap Icons;
+-   jQuery;
+-   jQuery Validation;
+-   jQuery Mask;
+-   `FormData`;
+-   `fetch()`;
+-   Controllers PHP;
+-   Respostas JSON padronizadas;
+-   Classe `Validator`;
+-   Helpers para PHP;
+-   Helpers para JavaScript.
 
-O banco de dados e os Models ainda serão implementados.
+> O banco de dados, os Models reais e a autenticação com sessão ainda
+> não foram implementados.
 
----
+------------------------------------------------------------------------
 
-## 2. Criar a estrutura de pastas
+## 2. Estrutura atual do projeto
 
-Estrutura atual:
-
-```text
+``` text
 a_projeto_mvc_completo/
 │
 ├── assets/
@@ -41,6 +48,7 @@ a_projeto_mvc_completo/
 │   │   ├── 404.css
 │   │   ├── cliente.css
 │   │   ├── funcionario.css
+│   │   ├── login.css
 │   │   └── produto.css
 │   │
 │   ├── img/
@@ -50,6 +58,7 @@ a_projeto_mvc_completo/
 │       ├── 404.js
 │       ├── cliente.js
 │       ├── funcionario.js
+│       ├── login.js
 │       └── produto.js
 │
 ├── config/
@@ -64,7 +73,12 @@ a_projeto_mvc_completo/
 │   └── exemploLayout.php
 │
 ├── libs/
-│   └── Validator.php
+│   ├── js/
+│   │   └── helpers.js
+│   │
+│   └── php/
+│       ├── helpers.php
+│       └── Validator.php
 │
 ├── models/
 │   └── exemploModel.php
@@ -74,6 +88,8 @@ a_projeto_mvc_completo/
 │   ├── cliente.php
 │   ├── funcionario.php
 │   ├── home.php
+│   ├── landing.php
+│   ├── login.php
 │   └── produto.php
 │
 ├── documentacao.md
@@ -81,105 +97,271 @@ a_projeto_mvc_completo/
 └── routes.php
 ```
 
-### Responsabilidade de cada pasta
+### Responsabilidade das principais pastas
 
-| Pasta/Arquivo | Responsabilidade |
-| --- | --- |
-| `assets/` | Recursos utilizados pela interface |
-| `assets/css/` | Estilos CSS das páginas |
-| `assets/img/` | Imagens |
-| `assets/js/` | JavaScript criado para as páginas |
-| `config/` | Futuras configurações, como conexão com banco |
-| `controllers/` | Recebem requisições, validam e processam os dados |
-| `layout/` | Futuras partes reutilizáveis do layout |
-| `libs/` | Classes e bibliotecas reutilizáveis |
-| `models/` | Futuro acesso ao banco de dados |
-| `views/` | Páginas exibidas ao usuário |
-| `documentacao.md` | Documentação do projeto |
-| `index.php` | Porta de entrada da aplicação |
-| `routes.php` | Define qual View será carregada |
+  Pasta            Responsabilidade
+  ---------------- ------------------------------------------------
+  `assets/css/`    CSS das páginas
+  `assets/img/`    Imagens do projeto
+  `assets/js/`     JavaScript específico das páginas
+  `controllers/`   Receber, validar e processar requisições
+  `libs/php/`      Classes e funções PHP reutilizáveis
+  `libs/js/`       Funções JavaScript reutilizáveis
+  `models/`        Futuro acesso ao banco de dados
+  `views/`         Interfaces exibidas ao usuário
+  `config/`        Futuras configurações
+  `layout/`        Estrutura preparada para layouts reutilizáveis
 
----
+------------------------------------------------------------------------
 
-## 3. Criar o `index.php`
+## 3. Fluxo atual de navegação
 
-O `index.php` é a porta de entrada da aplicação.
+A primeira página do projeto agora é a **Landing Page**.
 
-No projeto atual ele é responsável por:
-
-1. Criar a estrutura HTML;
-2. Carregar Bootstrap;
-3. Carregar Bootstrap Icons;
-4. Descobrir a página atual;
-5. Exibir o cabeçalho;
-6. Exibir o menu;
-7. Chamar `routes.php`;
-8. Exibir o rodapé;
-9. Carregar o JavaScript do Bootstrap.
-
-Página padrão:
-
-```php
-<?php $page = $_GET['page'] ?? 'home'; ?>
-```
-
-Isso significa:
-
-```text
+``` text
 index.php
+   ↓
+landing.php
+   ↓
+login.php
+   ↓
+home.php
+   ↓
+Produtos / Clientes / Funcionários
+```
+
+No estado atual, o Login é apenas visual. O botão **Entrar** direciona
+diretamente para:
+
+``` text
+index.php?page=home
+```
+
+Ainda não existe autenticação real.
+
+------------------------------------------------------------------------
+
+## 4. `index.php`
+
+O `index.php` continua sendo a porta de entrada da aplicação.
+
+A página padrão é:
+
+``` php
+$page = $_GET["page"] ?? "landing";
+```
+
+Portanto:
+
+``` text
+index.php
+```
+
+abre a Landing Page.
+
+### Páginas independentes
+
+Atualmente existem duas páginas com HTML próprio:
+
+``` php
+$paginasIndependentes = [
+    "landing" => __DIR__ . "/views/landing.php",
+    "login" => __DIR__ . "/views/login.php",
+];
+```
+
+O `index.php` verifica:
+
+``` php
+if (array_key_exists($page, $paginasIndependentes)) {
+    require $paginasIndependentes[$page];
+    exit;
+}
+```
+
+O `exit` é importante porque impede que o header e o footer da área
+administrativa sejam carregados depois da Landing ou do Login.
+
+### Área administrativa
+
+As demais páginas utilizam o layout do próprio `index.php`:
+
+``` text
+Header
 ↓
-home
+Menu
+↓
+routes.php
+↓
+View
+↓
+Footer
 ```
 
-O arquivo de rotas é carregado dentro do `<main>`:
+O menu atual possui:
 
-```php
-require __DIR__ . "/routes.php";
+-   Produtos;
+-   Clientes;
+-   Funcionários;
+-   Sair.
+
+O título **Sistema de Cadastros** direciona para:
+
+``` text
+index.php?page=home
 ```
 
----
+O link **Sair**, por enquanto, apenas retorna para:
 
-## 4. Criar o menu principal
+``` text
+index.php?page=landing
+```
 
-O sistema possui as opções:
+Como ainda não existe sessão, ele não realiza logout real.
 
-```text
-Início
+------------------------------------------------------------------------
+
+## 5. Landing Page
+
+Arquivo:
+
+``` text
+views/landing.php
+```
+
+A Landing Page é totalmente independente e possui:
+
+-   `<!DOCTYPE html>`;
+-   `<html>`;
+-   `<head>`;
+-   Bootstrap;
+-   Bootstrap Icons;
+-   header próprio;
+-   apresentação do sistema;
+-   cards de recursos;
+-   botões para Login;
+-   footer próprio.
+
+Os botões utilizam:
+
+``` html
+<a href="index.php?page=login">
+    Entrar
+</a>
+```
+
+A Landing apresenta os módulos:
+
+``` text
 Produtos
 Clientes
 Funcionários
 ```
 
-Exemplo:
+------------------------------------------------------------------------
 
-```php
-<a href="index.php?page=produtos"
-   class="nav-link <?= $page === 'produtos'
-       ? 'text-white fw-bold'
-       : 'text-white-50' ?>">
-    Produtos
-</a>
+## 6. Página de Login
+
+Arquivo:
+
+``` text
+views/login.php
 ```
 
-A expressão PHP identifica a página atual e destaca o item correspondente.
+Também é uma página independente.
 
-O título do sistema também funciona como link para a Home:
+Possui:
 
-```html
+-   campo de e-mail;
+-   campo de senha;
+-   Bootstrap;
+-   Bootstrap Icons;
+-   `login.css`;
+-   jQuery;
+-   jQuery Validation;
+-   `helpers.js`;
+-   `login.js`.
+
+### Estado atual do botão Entrar
+
+O botão de envio foi temporariamente comentado:
+
+``` html
+<!--
+<button type="submit">
+    Entrar
+</button>
+-->
+```
+
+E foi colocado um link:
+
+``` html
 <a href="index.php?page=home"
-   class="text-white text-decoration-none">
-    Sistema de Cadastros
+   class="btn btn-primary w-100">
+    Entrar
 </a>
 ```
 
----
+Assim, neste momento:
 
-## 5. Criar o `routes.php`
+``` text
+Login
+↓
+clicar em Entrar
+↓
+Home
+```
 
-As páginas válidas atualmente são:
+> Como o botão atual é um `<a>`, ele não envia o formulário e não
+> autentica o usuário. Isso é proposital nesta etapa.
 
-```php
+O arquivo `login.js` já está preparado com validações de e-mail e senha
+para uma etapa futura de autenticação.
+
+------------------------------------------------------------------------
+
+## 7. Home da área administrativa
+
+Arquivo:
+
+``` text
+views/home.php
+```
+
+É a primeira tela interna do sistema.
+
+A Home permite acessar os módulos:
+
+``` text
+Produtos
+Clientes
+Funcionários
+```
+
+Diferente da Landing e do Login, ela utiliza:
+
+``` text
+Header do index.php
++
+Footer do index.php
+```
+
+------------------------------------------------------------------------
+
+## 8. Rotas
+
+Arquivo:
+
+``` text
+routes.php
+```
+
+As rotas cadastradas atualmente são:
+
+``` php
 $paginasValidas = [
+    "landing" => __DIR__ . "/views/landing.php",
     "home" => __DIR__ . "/views/home.php",
     "produtos" => __DIR__ . "/views/produto.php",
     "clientes" => __DIR__ . "/views/cliente.php",
@@ -189,117 +371,80 @@ $paginasValidas = [
 
 A página é capturada com:
 
-```php
-$page = $_GET["page"] ?? "home";
+``` php
+$page = $_GET["page"] ?? "landing";
 ```
 
-Depois verificamos se a rota existe:
+A verificação utiliza:
 
-```php
-if (array_key_exists($page, $paginasValidas)) {
-
-    require $paginasValidas[$page];
-
-} else {
-
-    http_response_code(404);
-
-    require __DIR__ . "/views/404.php";
-}
+``` php
+array_key_exists($page, $paginasValidas)
 ```
 
-### Rotas atuais
+Se a rota existir:
 
-| URL                           | View             |
-| ----------------------------- | ---------------- |
-| `index.php`                   | `home.php`       |
-| `index.php?page=home`         | `home.php`       |
-| `index.php?page=produtos`     | `produto.php`    |
-| `index.php?page=clientes`     | `cliente.php`    |
-| `index.php?page=funcionarios` | `funcionario.php`|
-| rota inexistente              | `404.php`        |
+``` php
+require $paginasValidas[$page];
+```
 
----
+Caso contrário:
 
-## 6. Criar a Home
+``` php
+http_response_code(404);
+require __DIR__ . "/views/404.php";
+```
+
+### Observação sobre Landing e Login
+
+A Landing e o Login são tratados antes pelo `index.php`.
+
+Por isso, o Login não precisa estar em `$paginasValidas` de `routes.php`
+para funcionar.
+
+------------------------------------------------------------------------
+
+## 9. Página 404
 
 Arquivo:
 
-```text
-views/home.php
-```
-
-A Home possui três cards:
-
-- Produtos;
-- Clientes;
-- Funcionários.
-
-Cada card direciona para uma rota do sistema.
-
-Exemplo:
-
-```html
-<a href="index.php?page=produtos"
-   class="btn btn-primary">
-    Acessar produtos
-</a>
-```
-
-A página utiliza principalmente classes do Bootstrap, sem necessidade de CSS próprio neste momento.
-
----
-
-## 7. Criar a página 404
-
-Arquivo:
-
-```text
+``` text
 views/404.php
 ```
 
 Quando uma rota não existe:
 
-```php
+``` php
 http_response_code(404);
-require __DIR__ . "/views/404.php";
 ```
 
-A View possui:
+é executado e a View 404 é carregada.
 
-- imagem;
-- código `404`;
-- mensagem;
-- orientação ao usuário;
-- botão para Produtos;
-- botão para Página Inicial.
+A página possui:
 
-Arquivo de estilo existente:
+-   `404.css`;
+-   imagem `erro-404.png`;
+-   mensagem de página não encontrada;
+-   botão para Produtos;
+-   botão para a Página Inicial.
 
-```text
-assets/css/404.css
-```
+No estado atual, a 404 **não é uma página HTML independente**. Ela é
+carregada pelo `routes.php` dentro do `<main>` do layout administrativo.
 
+------------------------------------------------------------------------
 
-O arquivo `assets/js/404.js` está vazio e pode permanecer como reserva para futuras funcionalidades ou ser removido caso não seja utilizado.
-
----
-
-## 8. Criar as Views de cadastro
-
-Arquivos:
-
-```text
-views/produto.php
-views/cliente.php
-views/funcionario.php
-```
+## 10. Views dos cadastros
 
 ### Produto
 
+Arquivo:
+
+``` text
+views/produto.php
+```
+
 Campos:
 
-```text
+``` text
 nome
 categoria
 preco
@@ -308,9 +453,15 @@ quantidade
 
 ### Cliente
 
+Arquivo:
+
+``` text
+views/cliente.php
+```
+
 Campos:
 
-```text
+``` text
 nome
 cpf
 email
@@ -319,20 +470,24 @@ telefone
 
 ### Funcionário
 
+Arquivo:
+
+``` text
+views/funcionario.php
+```
+
 Campos:
 
-```text
+``` text
 nome
 cnpj
 regFunc
 pis
 ```
 
-### Estrutura padronizada
+Os formulários seguem uma estrutura visual semelhante com Bootstrap:
 
-Os formulários seguem o mesmo padrão:
-
-```html
+``` html
 <div class="mb-3">
 
     <label for="nome" class="form-label">
@@ -360,471 +515,234 @@ Os formulários seguem o mesmo padrão:
 </div>
 ```
 
-Também existe uma área padronizada para retorno:
+------------------------------------------------------------------------
 
-```html
-<div id="mensagem"
-     class="alert d-none mt-3">
-</div>
-```
+## 11. Bibliotecas do frontend
 
----
+O projeto utiliza:
 
-## 9. Carregar as bibliotecas JavaScript
+### Bootstrap
 
-Nas três Views de cadastro são carregadas:
+Responsável pela estrutura visual e responsividade.
+
+### Bootstrap Icons
+
+Responsável pelos ícones.
 
 ### jQuery
 
-```html
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-```
+Facilita manipulações no frontend e é necessário para os plugins
+utilizados.
 
 ### jQuery Validation
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
-```
+Responsável pelas validações no navegador.
 
 ### jQuery Mask
 
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-```
+Responsável pelas máscaras de digitação.
 
-Depois é carregado o script específico da página:
+------------------------------------------------------------------------
 
-```html
-<script src="assets/js/produto.js"></script>
-```
-
-A ordem é importante:
-
-```text
-jQuery
-↓
-jQuery Validation
-↓
-jQuery Mask
-↓
-JavaScript da página
-```
-
----
-
-## 10. Inicializar o JavaScript
-
-Os scripts seguem o mesmo padrão:
-
-```javascript
-$(document).ready(function () {
-
-    aplicarMascaras();
-
-    validarFormulario();
-
-});
-```
-
-Isso executa o código quando a página estiver pronta.
-
----
-
-## 11. Aplicar máscaras
+## 12. Máscaras
 
 ### Produto
 
-Preço:
-
-```javascript
+``` javascript
 $("#preco").mask("000.000.000,00", {
-    reverse: true,
+  reverse: true,
 });
-```
 
-Quantidade:
-
-```javascript
 $("#quantidade").mask("000000");
 ```
 
 ### Cliente
 
-CPF:
-
-```javascript
-$("#cpf").mask("000.000.000-00");
-```
-
-Telefone:
-
-```javascript
+``` javascript
 $("#telefone").mask("(00) 00000-0000");
+$("#cpf").mask("000.000.000-00");
 ```
 
 ### Funcionário
 
-CNPJ:
-
-```javascript
+``` javascript
 $("#cnpj").mask("00.000.000/0000-00");
-```
-
-PIS:
-
-```javascript
 $("#pis").mask("000.00000.00-0");
-```
-
-Registro:
-
-```javascript
 $("#regFunc").mask("0-0000");
 ```
 
----
+A máscara melhora a digitação, mas não substitui a validação.
 
-## 12. Validar no lado cliente
+------------------------------------------------------------------------
 
-Exemplo de Produto:
+## 13. jQuery Validation
 
-```javascript
+Estrutura utilizada:
+
+``` javascript
 $("#formProduto").validate({
 
-    rules: {
+  rules: {},
 
-        nome: {
-            required: true,
-            minlength: 3,
-        },
+  messages: {},
 
-        categoria: {
-            required: true,
-            minlength: 3,
-        },
+  errorPlacement: function (error, element) {},
 
-        preco: {
-            required: true,
-        },
+  highlight: function (element) {},
 
-        quantidade: {
-            required: true,
-            digits: true,
-            min: 1,
-        },
-    },
+  unhighlight: function (element) {},
 
-    messages: {
-
-        nome: {
-            required: "Informe o nome do produto.",
-            minlength: "O nome deve ter pelo menos 3 caracteres.",
-        },
-
-        categoria: {
-            required: "Informe a categoria do produto.",
-            minlength: "A categoria deve ter pelo menos 3 caracteres.",
-        },
-
-        preco: {
-            required: "Informe o preço do produto.",
-        },
-
-        quantidade: {
-            required: "Informe a quantidade.",
-            digits: "Digite somente números inteiros.",
-            min: "A quantidade deve ser maior ou igual a 1.",
-        },
-    },
+  submitHandler: async function (formulario) {}
 
 });
 ```
 
----
+### `rules`
 
-## 13. Mostrar feedback do Bootstrap
+Define as regras.
 
-Mensagem de erro:
+### `messages`
 
-```javascript
-errorPlacement: function (error, element) {
+Define as mensagens em português.
 
-    element
-        .closest(".mb-3")
-        .find(".invalid-feedback")
-        .text(error.text());
-},
+### `errorPlacement`
+
+Define onde a mensagem será exibida.
+
+### `highlight`
+
+Adiciona:
+
+``` text
+is-invalid
 ```
 
-Campo inválido:
+### `unhighlight`
 
-```javascript
-highlight: function (element) {
+Adiciona:
 
-    $(element)
-        .removeClass("is-valid")
-        .addClass("is-invalid");
-},
+``` text
+is-valid
 ```
 
-Campo válido:
+### `submitHandler`
 
-```javascript
-unhighlight: function (element) {
+É executado quando o formulário passa pelas validações.
 
-    $(element)
-        .removeClass("is-invalid")
-        .addClass("is-valid");
-},
-```
+------------------------------------------------------------------------
 
-Ao limpar o formulário:
+## 14. FormData
 
-```javascript
-$("#formProduto").on("reset", function () {
+Os dados são capturados com:
 
-    $(this)
-        .find(".form-control")
-        .removeClass("is-valid is-invalid");
-
-});
-```
-
-O mesmo padrão foi aplicado em Cliente e Funcionário.
-
----
-
-## 14. Criar o `FormData`
-
-Quando o formulário estiver válido:
-
-```javascript
-submitHandler: async function (formulario) {
-
-    const dados = new FormData(formulario);
-
-}
-```
-
-O `FormData` reúne os campos que possuem atributo `name`.
-
-Exemplo:
-
-```html
-<input id="nome" name="nome">
+``` javascript
+const dados = new FormData(formulario);
 ```
 
 Consultar:
 
-```javascript
+``` javascript
 dados.get("nome");
 ```
 
 Alterar:
 
-```javascript
-dados.set("nome", "Novo valor");
-```
-
----
-
-## 15. Preparar os dados antes do envio
-
-### Preço
-
-Na tela:
-
-```text
-1.234,56
-```
-
-Enviado:
-
-```text
-1234.56
-```
-
-Código:
-
-```javascript
-const precoConvertido = $("#preco")
-    .val()
-    .replace(/\./g, "")
-    .replace(",", ".");
-
-dados.set("preco", precoConvertido);
-```
-
-### CPF
-
-```javascript
-const cpf = $("#cpf")
-    .val()
-    .replace(/\D/g, "");
-
+``` javascript
 dados.set("cpf", cpf);
 ```
 
-### Telefone
+------------------------------------------------------------------------
 
-```javascript
-const telefone = $("#telefone")
-    .val()
-    .replace(/\D/g, "");
+## 15. Preparação dos dados
 
-dados.set("telefone", telefone);
+Alguns valores são exibidos formatados para o usuário, mas enviados sem
+máscara.
+
+Exemplo:
+
+``` text
+CPF na tela:
+123.456.789-00
+
+CPF enviado:
+12345678900
 ```
 
-### CNPJ
+Produto também converte:
 
-```javascript
-const cnpj = $("#cnpj")
-    .val()
-    .replace(/\D/g, "");
-
-dados.set("cnpj", cnpj);
+``` text
+1.234,56
 ```
 
-### PIS
+para:
 
-```javascript
-const pis = $("#pis")
-    .val()
-    .replace(/\D/g, "");
-
-dados.set("pis", pis);
+``` text
+1234.56
 ```
 
-### Registro do funcionário
+------------------------------------------------------------------------
 
-```javascript
-const regFunc = $("#regFunc")
-    .val()
-    .replace(/\D/g, "");
+## 16. `fetch()`
 
-dados.set("regFunc", regFunc);
-```
-
----
-
-## 16. Enviar os dados com `fetch()`
+Os cadastros são enviados sem recarregar a página.
 
 Produto:
 
-```javascript
+``` javascript
 const resposta = await fetch(
-    "controllers/ProdutoController.php",
-    {
-        method: "POST",
-        body: dados,
-    }
+  "controllers/ProdutoController.php",
+  {
+    method: "POST",
+    body: dados,
+  }
 );
 ```
 
-Cliente:
+Depois:
 
-```javascript
-const resposta = await fetch(
-    "controllers/ClienteController.php",
-    {
-        method: "POST",
-        body: dados,
-    }
-);
-```
-
-Funcionário:
-
-```javascript
-const resposta = await fetch(
-    "controllers/FuncionarioController.php",
-    {
-        method: "POST",
-        body: dados,
-    }
-);
-```
-
-A resposta é convertida para JSON:
-
-```javascript
+``` javascript
 const resultado = await resposta.json();
 ```
 
----
+Cliente e Funcionário seguem o mesmo padrão.
 
-## 17. Tratar erros retornados pelo backend
+------------------------------------------------------------------------
 
-O padrão atual é:
-
-```javascript
-if (!resposta.ok) {
-
-    mensagem.className =
-        "alert alert-danger mt-3";
-
-    let conteudo =
-        `<strong>${resultado.mensagem}</strong>`;
-
-    if (resultado.erros) {
-
-        conteudo += "<ul class='mb-0 mt-2'>";
-
-        Object.entries(resultado.erros)
-            .forEach(function ([campo, erros]) {
-
-                erros.forEach(function (erro) {
-                    conteudo += `<li>${erro}</li>`;
-                });
-
-            });
-
-        conteudo += "</ul>";
-    }
-
-    mensagem.innerHTML = conteudo;
-
-    return;
-}
-```
-
-Assim, erros de vários campos podem ser exibidos.
-
----
-
-## 18. Criar os Controllers
+## 17. Controllers
 
 Arquivos:
 
-```text
+``` text
 controllers/ProdutoController.php
 controllers/ClienteController.php
 controllers/FuncionarioController.php
 ```
 
-Todos seguem o mesmo fluxo:
+Fluxo atual:
 
-```text
-Receber requisição
+``` text
+Recebe requisição
 ↓
-Verificar POST
+Verifica POST
 ↓
-Criar Validator
+Cria Validator
 ↓
-Executar regras
+Executa regras
 ↓
-Verificar erros
+Verifica erros
 ↓
-TODO: Model/Banco
+TODO: banco de dados
 ↓
-Retornar JSON
+Retorna JSON
 ```
 
----
+------------------------------------------------------------------------
 
-## 19. Verificar o método HTTP
+## 18. Validação do método HTTP
 
-```php
+Os Controllers aceitam POST:
+
+``` php
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
     http_response_code(405);
@@ -835,285 +753,454 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             "Método não permitido. Utilize uma requisição POST.",
         "dados" => null,
         "erros" => null
-    ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    ]);
 
     exit;
 }
 ```
 
----
+------------------------------------------------------------------------
 
-## 20. Carregar o Validator
+## 19. Classe Validator
 
-```php
-require __DIR__ . "/../libs/Validator.php";
+Local atual:
+
+``` text
+libs/php/Validator.php
 ```
 
-Criar o objeto:
+Carregamento:
 
-```php
+``` php
+require __DIR__ . "/../libs/php/Validator.php";
+```
+
+Uso:
+
+``` php
 $validator = new Validator($_POST);
 ```
 
-Executar as regras:
+Depois:
 
-```php
+``` php
 validarCadastro($validator);
 ```
 
----
+Se houver erros:
 
-## 21. Validar Produto no backend
-
-### Nome
-
-```php
-$validator->required(
-    "nome",
-    "O nome do produto é obrigatório."
-);
-
-$validator->string(
-    "nome",
-    "O nome do produto deve ser um texto válido."
-);
-
-$validator->minLength(
-    "nome",
-    3,
-    "O nome do produto deve conter no mínimo 3 caracteres."
-);
-
-$validator->maxLength(
-    "nome",
-    100,
-    "O nome do produto deve conter no máximo 100 caracteres."
-);
-```
-
-### Categoria
-
-Valida:
-
-```text
-required
-string
-minLength 3
-maxLength 100
-```
-
-### Preço
-
-Valida:
-
-```text
-required
-numeric
-min 0.01
-```
-
-### Quantidade
-
-Valida:
-
-```text
-required
-integer
-min 1
-```
-
----
-
-## 22. Validar Cliente no backend
-
-### Nome
-
-```text
-required
-string
-minLength 3
-maxLength 100
-```
-
-### CPF
-
-O JavaScript remove a máscara antes do envio.
-
-O backend espera:
-
-```text
-11 dígitos
-```
-
-Valida:
-
-```text
-required
-string
-minLength 11
-maxLength 11
-```
-
-### E-mail
-
-```text
-required
-email
-```
-
-### Telefone
-
-O backend aceita:
-
-```text
-10 ou 11 dígitos
-```
-
-Valida:
-
-```text
-required
-string
-minLength 10
-maxLength 11
-```
-
----
-
-## 23. Validar Funcionário no backend
-
-### Nome
-
-```text
-required
-string
-minLength 3
-maxLength 100
-```
-
-### CNPJ
-
-Depois da remoção da máscara:
-
-```text
-14 dígitos
-```
-
-Valida:
-
-```text
-required
-string
-minLength 14
-maxLength 14
-```
-
-### Registro
-
-Depois da remoção da máscara:
-
-```text
-5 dígitos
-```
-
-Valida:
-
-```text
-required
-string
-minLength 5
-maxLength 5
-```
-
-### PIS
-
-Depois da remoção da máscara:
-
-```text
-11 dígitos
-```
-
-Valida:
-
-```text
-required
-string
-minLength 11
-maxLength 11
-```
-
----
-
-## 24. Retornar erro de validação
-
-```php
+``` php
 if ($validator->fails()) {
-
-    http_response_code(422);
-
-    echo json_encode([
-        "sucesso" => false,
-        "mensagem" => "Corrija os campos indicados.",
-        "dados" => null,
-        "erros" => $validator->errors()
-    ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-
-    exit;
+    // retorna erro 422
 }
 ```
 
----
+------------------------------------------------------------------------
 
-## 25. Ponto onde entrará o banco de dados
+## 20. Validações disponíveis no Validator
 
-Nos três Controllers existe:
+A classe possui regras reutilizáveis.
 
-```php
-// -------->>> TODO: Aqui será realizado o cadastro no banco de dados
+### `required()`
+
+``` php
+$validator->required(
+    "nome",
+    "O nome é obrigatório."
+);
 ```
 
-Este será o ponto em que o Controller chamará o Model.
+### `string()`
 
-Futuramente:
-
-```text
-Controller
-↓
-Model
-↓
-Banco de Dados
+``` php
+$validator->string(
+    "nome",
+    "O nome deve ser um texto."
+);
 ```
 
----
+### `minLength()`
 
-## 26. Retornar sucesso
-
-Produto:
-
-```php
-echo json_encode([
-    "sucesso" => true,
-    "mensagem" =>
-        "Produto cadastrado com sucesso (controllerProduto).",
-    "dados" => $validator->data(),
-    "erros" => null
-], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+``` php
+$validator->minLength(
+    "nome",
+    3,
+    "O nome deve ter no mínimo 3 caracteres."
+);
 ```
 
-Cliente e Funcionário seguem o mesmo contrato.
+### `maxLength()`
 
-> Quando o banco for implementado, é recomendável retirar os textos de teste `(controllerProduto)`, `(controllerCliente)` e `(controllerFuncionario)` das mensagens finais.
+``` php
+$validator->maxLength(
+    "nome",
+    100,
+    "O nome deve ter no máximo 100 caracteres."
+);
+```
 
----
+### `numeric()`
 
-## 27. Contrato JSON padronizado
+``` php
+$validator->numeric(
+    "preco",
+    "Informe um número válido."
+);
+```
+
+### `integer()`
+
+``` php
+$validator->integer(
+    "quantidade",
+    "Informe um número inteiro."
+);
+```
+
+### `min()`
+
+``` php
+$validator->min(
+    "quantidade",
+    1,
+    "O valor mínimo é 1."
+);
+```
+
+### `max()`
+
+``` php
+$validator->max(
+    "quantidade",
+    100,
+    "O valor máximo é 100."
+);
+```
+
+### `between()`
+
+``` php
+$validator->between(
+    "idade",
+    18,
+    65,
+    "A idade deve estar entre 18 e 65."
+);
+```
+
+### `email()`
+
+``` php
+$validator->email(
+    "email",
+    "Informe um e-mail válido."
+);
+```
+
+### `url()`
+
+``` php
+$validator->url(
+    "site",
+    "Informe uma URL válida."
+);
+```
+
+### `regex()`
+
+``` php
+$validator->regex(
+    "telefone",
+    "/^[0-9]{10,11}$/",
+    "Informe um telefone válido."
+);
+```
+
+### `date()`
+
+Formato esperado:
+
+``` text
+dia/mês/ano
+```
+
+Uso:
+
+``` php
+$validator->date(
+    "dataNascimento",
+    "Informe uma data válida."
+);
+```
+
+### `alpha()`
+
+``` php
+$validator->alpha(
+    "nome",
+    "Utilize apenas letras."
+);
+```
+
+### `alphaNumeric()`
+
+``` php
+$validator->alphaNumeric(
+    "codigo",
+    "Utilize apenas letras e números."
+);
+```
+
+### `in()`
+
+``` php
+$validator->in(
+    "categoria",
+    ["Roupa", "Alimento", "Eletrônico"],
+    "Categoria inválida."
+);
+```
+
+### `boolean()`
+
+``` php
+$validator->boolean(
+    "ativo",
+    "Informe um valor válido."
+);
+```
+
+### `confirmed()`
+
+``` php
+$validator->confirmed(
+    "senha",
+    null,
+    "As senhas não conferem."
+);
+```
+
+### `same()`
+
+``` php
+$validator->same(
+    "email",
+    "confirmarEmail",
+    "Os e-mails devem ser iguais."
+);
+```
+
+------------------------------------------------------------------------
+
+## 21. Métodos de resultado do Validator
+
+### `fails()`
+
+``` php
+$validator->fails();
+```
+
+Retorna `true` se houver erros.
+
+### `passes()`
+
+``` php
+$validator->passes();
+```
+
+Retorna `true` se não houver erros.
+
+### `errors()`
+
+``` php
+$validator->errors();
+```
+
+Retorna os erros.
+
+### `first()`
+
+``` php
+$validator->first("nome");
+```
+
+Retorna os erros associados ao campo informado.
+
+### `data()`
+
+``` php
+$validator->data();
+```
+
+Retorna os dados recebidos.
+
+------------------------------------------------------------------------
+
+## 22. Helpers PHP
+
+Foi criada uma área própria:
+
+``` text
+libs/php/helpers.php
+```
+
+Helpers são funções genéricas e reutilizáveis.
+
+### `somenteNumeros()`
+
+``` php
+somenteNumeros("123.456.789-00");
+```
+
+Retorna:
+
+``` text
+12345678900
+```
+
+### `dataParaBanco()`
+
+``` php
+dataParaBanco("25/12/2026");
+```
+
+Retorna:
+
+``` text
+2026-12-25
+```
+
+### `dataParaBrasil()`
+
+``` php
+dataParaBrasil("2026-12-25");
+```
+
+Retorna:
+
+``` text
+25/12/2026
+```
+
+### `precoParaBanco()`
+
+``` php
+precoParaBanco("1.234,56");
+```
+
+Retorna:
+
+``` text
+1234.56
+```
+
+### `precoParaBrasil()`
+
+``` php
+precoParaBrasil(1234.56);
+```
+
+Retorna:
+
+``` text
+1.234,56
+```
+
+### `limparTexto()`
+
+``` php
+limparTexto("   Maria Silva   ");
+```
+
+Retorna:
+
+``` text
+Maria Silva
+```
+
+Para carregar:
+
+``` php
+require __DIR__ . "/../libs/php/helpers.php";
+```
+
+> Os helpers PHP já foram criados, mas os Controllers atuais ainda não
+> os utilizam.
+
+------------------------------------------------------------------------
+
+## 23. Helpers JavaScript
+
+Arquivo:
+
+``` text
+libs/js/helpers.js
+```
+
+### `somenteNumeros()`
+
+``` javascript
+somenteNumeros("123.456.789-00");
+```
+
+Retorna:
+
+``` text
+12345678900
+```
+
+### `precoParaBackend()`
+
+``` javascript
+precoParaBackend("1.234,56");
+```
+
+Retorna:
+
+``` text
+1234.56
+```
+
+### `mostrarMensagem()`
+
+``` javascript
+mostrarMensagem(
+  mensagem,
+  "success",
+  "Cadastro realizado com sucesso."
+);
+```
+
+### `limparValidacao()`
+
+``` javascript
+limparValidacao(formulario);
+```
+
+Remove:
+
+``` text
+is-valid
+is-invalid
+```
+
+> O arquivo de helpers JavaScript já existe. Na versão atual, ele é
+> carregado pela página de Login, mas os scripts de Produto, Cliente e
+> Funcionário ainda mantêm suas conversões diretamente nos próprios
+> arquivos.
+
+------------------------------------------------------------------------
+
+## 24. Contrato JSON padronizado
+
+Os Controllers seguem o mesmo formato.
 
 ### Sucesso
 
-```json
+``` json
 {
     "sucesso": true,
-    "mensagem": "Produto cadastrado com sucesso.",
+    "mensagem": "Cadastro realizado com sucesso.",
     "dados": {},
     "erros": null
 }
@@ -1121,189 +1208,62 @@ Cliente e Funcionário seguem o mesmo contrato.
 
 ### Erro
 
-```json
+``` json
 {
     "sucesso": false,
     "mensagem": "Corrija os campos indicados.",
     "dados": null,
     "erros": {
         "nome": [
-            "O nome do produto é obrigatório."
+            "O nome é obrigatório."
         ]
     }
 }
 ```
 
-O frontend pode sempre utilizar:
+Assim o frontend pode trabalhar sempre com:
 
-```javascript
+``` javascript
 resultado.sucesso;
 resultado.mensagem;
 resultado.dados;
 resultado.erros;
 ```
 
----
+------------------------------------------------------------------------
 
-# PARTE 2 — ENTENDENDO O PROJETO
+## 25. Códigos HTTP utilizados
 
-# 28. O que é MVC?
+  Código   Significado
+  -------- -----------------------------------
+  `200`    Requisição processada com sucesso
+  `404`    Página não encontrada
+  `405`    Método HTTP não permitido
+  `422`    Dados não passaram pela validação
+
+------------------------------------------------------------------------
+
+# PARTE 2 --- ENTENDENDO OS CONCEITOS
+
+## 26. MVC
 
 MVC significa:
 
-```text
+``` text
 Model
 View
 Controller
 ```
 
-| Camada      | Responsabilidade                        |
-| ----------- | --------------------------------------- |
-| Model       | Manipula dados e acessa o banco         |
-| View        | Interface exibida ao usuário            |
-| Controller  | Controla a requisição e o processamento |
+### View
 
-Fluxo conceitual:
-
-```text
-View
-↓
-Controller
-↓
-Model
-↓
-Banco
-```
-
-No projeto atual, View e Controller já estão implementados. A parte de Model/Banco ainda está preparada apenas estruturalmente.
-
----
-
-# 29. Fluxo de navegação
-
-```text
-Usuário
-↓
-URL
-↓
-index.php
-↓
-routes.php
-↓
-View
-```
-
-Exemplo:
-
-```text
-index.php?page=clientes
-↓
-routes.php
-↓
-views/cliente.php
-```
-
----
-
-# 30. URL
-
-Exemplo:
-
-```text
-http://localhost/projeto/index.php?page=produtos
-```
-
-| Parte            | Significado        |
-| ---------------- | ------------------ |
-| `localhost`      | Servidor local     |
-| `projeto`        | Pasta do projeto   |
-| `index.php`      | Arquivo de entrada |
-| `?page=produtos` | Parâmetro da URL   |
-
----
-
-# 31. GET
-
-GET envia informações pela URL.
-
-```php
-$_GET["page"];
-```
+Exibe a interface.
 
 No projeto:
 
-```php
-$page = $_GET["page"] ?? "home";
-```
-
-O operador `??` significa:
-
-> Use o valor da esquerda se ele existir; caso contrário, use o valor da direita.
-
----
-
-# 32. `array_key_exists()`
-
-Utilizado nas rotas:
-
-```php
-array_key_exists($page, $paginasValidas);
-```
-
-Verifica se uma chave existe no array.
-
-Exemplo:
-
-```php
-$paginasValidas = [
-    "home" => "views/home.php",
-    "produtos" => "views/produto.php"
-];
-```
-
-Se:
-
-```php
-$page = "produtos";
-```
-
-a chave existe.
-
----
-
-# 33. `__DIR__`
-
-`__DIR__` representa a pasta onde o arquivo PHP atual está localizado.
-
-Exemplo:
-
-```php
-__DIR__ . "/views/produto.php";
-```
-
-É mais seguro do que depender da pasta atual do navegador ou do servidor.
-
----
-
-# 34. `require`
-
-Carrega outro arquivo PHP.
-
-```php
-require __DIR__ . "/routes.php";
-```
-
-Se o arquivo obrigatório não puder ser carregado, a execução é interrompida.
-
----
-
-# 35. View
-
-A View representa a interface.
-
-No projeto:
-
-```text
+``` text
+landing.php
+login.php
 home.php
 produto.php
 cliente.php
@@ -1311,210 +1271,153 @@ funcionario.php
 404.php
 ```
 
-Ela trabalha principalmente com:
+### Controller
 
-```text
-HTML
-Bootstrap
-Bootstrap Icons
-CSS
-JavaScript
-jQuery
+Recebe e processa requisições.
+
+No projeto:
+
+``` text
+ProdutoController.php
+ClienteController.php
+FuncionarioController.php
 ```
 
----
+### Model
 
-# 36. Bootstrap
+Será responsável pelo acesso ao banco.
 
-Framework CSS utilizado para facilitar a criação da interface.
+A pasta existe, mas os Models reais ainda não foram implementados.
 
-Exemplos usados:
+------------------------------------------------------------------------
 
-```text
-container
-row
-col-md-4
-col-md-6
-form-control
-form-label
-input-group
-input-group-text
-btn
-btn-primary
-alert
-card
-shadow-sm
-text-muted
-d-none
-mt-5
-mb-3
-w-100
-```
+## 27. GET
 
----
-
-# 37. Bootstrap Icons
+GET é utilizado nas rotas.
 
 Exemplo:
 
-```html
-<i class="bi bi-person"></i>
+``` text
+index.php?page=produtos
 ```
 
-Ícones utilizados incluem pessoas, produtos, envelope, telefone, empresa e outros.
+No PHP:
 
----
+``` php
+$_GET["page"];
+```
 
-# 38. jQuery
+------------------------------------------------------------------------
 
-Biblioteca JavaScript.
+## 28. POST
+
+POST é utilizado para enviar os formulários aos Controllers.
+
+No PHP:
+
+``` php
+$_POST
+```
+
+Exemplo:
+
+``` php
+$_POST["nome"];
+```
+
+------------------------------------------------------------------------
+
+## 29. `array_key_exists()`
+
+Verifica se uma chave existe em um array.
+
+``` php
+array_key_exists($page, $paginasValidas);
+```
+
+É utilizado tanto na identificação das páginas independentes quanto nas
+rotas.
+
+------------------------------------------------------------------------
+
+## 30. `__DIR__`
+
+Representa o diretório do arquivo PHP atual.
+
+``` php
+__DIR__ . "/views/home.php";
+```
+
+Ajuda a criar caminhos seguros para os arquivos do projeto.
+
+------------------------------------------------------------------------
+
+## 31. `require`
+
+Carrega outro arquivo PHP.
+
+``` php
+require __DIR__ . "/routes.php";
+```
+
+Também é utilizado para carregar:
+
+``` text
+Views
+Validator
+Helpers PHP
+```
+
+------------------------------------------------------------------------
+
+## 32. JSON
+
+JSON é utilizado para comunicação entre JavaScript e Controller.
+
+PHP:
+
+``` php
+echo json_encode([
+    "sucesso" => true,
+    "mensagem" => "Cadastro realizado."
+]);
+```
 
 JavaScript:
 
-```javascript
-document.getElementById("nome");
+``` javascript
+const resultado = await resposta.json();
 ```
 
-jQuery:
+------------------------------------------------------------------------
 
-```javascript
-$("#nome");
+## 33. `JSON_UNESCAPED_UNICODE`
+
+Mantém caracteres como:
+
+``` text
+á
+é
+ç
+ã
 ```
 
-No projeto ele é utilizado principalmente pelo Validation e Mask e para manipular os campos.
+mais legíveis no JSON.
 
----
+------------------------------------------------------------------------
 
-# 39. jQuery Validation
+## 34. `JSON_PRETTY_PRINT`
 
-Plugin responsável pela validação no navegador.
+Formata o JSON com indentação, facilitando a leitura durante o
+desenvolvimento.
 
-Estrutura utilizada:
+------------------------------------------------------------------------
 
-```javascript
-$("#formProduto").validate({
-
-    rules: {},
-
-    messages: {},
-
-    errorPlacement: function () {},
-
-    highlight: function () {},
-
-    unhighlight: function () {},
-
-    submitHandler: async function () {}
-
-});
-```
-
----
-
-# 40. jQuery Mask
-
-Aplica uma máscara visual durante a digitação.
+## 35. `async` e `await`
 
 Exemplo:
 
-```javascript
-$("#cpf").mask("000.000.000-00");
-```
-
-A máscara:
-
-- melhora a experiência do usuário;
-- orienta o formato de preenchimento;
-- não substitui a validação do backend.
-
----
-
-# 41. FormData
-
-Cria uma coleção com os dados do formulário:
-
-```javascript
-const dados = new FormData(formulario);
-```
-
-Consultar:
-
-```javascript
-dados.get("nome");
-```
-
-Alterar:
-
-```javascript
-dados.set("cpf", cpf);
-```
-
----
-
-# 42. `replace()` e expressão regular
-
-Exemplo:
-
-```javascript
-$("#cpf").val().replace(/\D/g, "");
-```
-
-`\D` significa:
-
-```text
-qualquer caractere que NÃO seja número
-```
-
-`g` significa:
-
-```text
-procurar em todo o texto
-```
-
-Assim:
-
-```text
-123.456.789-00
-```
-
-vira:
-
-```text
-12345678900
-```
-
----
-
-# 43. Fetch
-
-Envia a requisição sem recarregar a página:
-
-```javascript
-fetch("controllers/ProdutoController.php", {
-    method: "POST",
-    body: dados,
-});
-```
-
-Fluxo:
-
-```text
-JavaScript
-↓
-POST
-↓
-Controller
-```
-
----
-
-# 44. `async` e `await`
-
-A requisição ao servidor não é instantânea.
-
-Por isso:
-
-```javascript
+``` javascript
 submitHandler: async function (formulario) {
 
     const resposta = await fetch(...);
@@ -1522,15 +1425,15 @@ submitHandler: async function (formulario) {
 }
 ```
 
-`await` aguarda a operação assíncrona terminar antes de continuar.
+O `await` aguarda a resposta da operação assíncrona.
 
----
+------------------------------------------------------------------------
 
-# 45. `try` e `catch`
+## 36. `try` e `catch`
 
-Utilizados para tratar falhas na requisição:
+Exemplo:
 
-```javascript
+``` javascript
 try {
 
     const resposta = await fetch(...);
@@ -1542,484 +1445,36 @@ try {
 }
 ```
 
-O `catch` trata, por exemplo, falhas inesperadas de comunicação ou erros que impeçam a execução normal da requisição.
+É utilizado para tratar falhas durante a execução da requisição.
 
----
+------------------------------------------------------------------------
 
-# 46. POST
-
-Os dados dos formulários são enviados com:
-
-```text
-POST
-```
-
-No PHP:
-
-```php
-$_POST
-```
-
-Exemplo:
-
-```php
-$_POST["nome"];
-```
-
----
-
-# 47. Controller
-
-Responsabilidades no projeto:
-
-```text
-Receber
-↓
-Verificar método
-↓
-Validar
-↓
-Processar
-↓
-Responder
-```
-
-O Controller não gera a interface visual do cadastro.
-
----
-
-# 48. `header()` no Controller
-
-```php
-header(
-    "Content-Type: application/json; charset=utf-8"
-);
-```
-
-Informa que a resposta enviada pelo Controller será JSON em UTF-8.
-
----
-
-# 49. Códigos HTTP utilizados
-
-| Código | Significado no projeto         |
-| ------ | ------------------------------ |
-| `200`  | Operação realizada com sucesso |
-| `404`  | Rota/página não encontrada     |
-| `405`  | Método HTTP não permitido      |
-| `422`  | Erro de validação dos dados    |
-
----
-
-# 50. JSON
-
-Formato utilizado para comunicação entre backend e frontend.
-
-PHP:
-
-```php
-echo json_encode([
-    "sucesso" => true,
-    "mensagem" => "Cadastro realizado."
-]);
-```
-
-JavaScript:
-
-```javascript
-const resultado = await resposta.json();
-```
-
----
-
-# 51. `JSON_UNESCAPED_UNICODE`
-
-```php
-JSON_UNESCAPED_UNICODE
-```
-
-Evita transformar caracteres como:
-
-```text
-á
-ç
-ã
-é
-```
-
-em sequências Unicode pouco legíveis no JSON.
-
----
-
-# 52. `JSON_PRETTY_PRINT`
-
-```php
-JSON_PRETTY_PRINT
-```
-
-Formata o JSON com indentação para facilitar a leitura durante o desenvolvimento.
-
----
-
-# 53. Classe `Validator`
-
-Arquivo:
-
-```text
-libs/Validator.php
-```
-
-Uso:
-
-```php
-$validator = new Validator($_POST);
-```
-
-A classe armazena:
-
-```php
-private $dados = [];
-private $erros = [];
-```
-
----
-
-# 54. Métodos auxiliares do Validator
-
-São métodos privados utilizados internamente:
-
-```text
-valor()
-vazio()
-adicionarErro()
-ignorarSeVazio()
-```
-
-Eles não são chamados diretamente pelo Controller.
-
----
-
-# 55. Validações disponíveis no Validator
-
-A classe atual possui todas estas regras:
-
-## `required()`
-
-Campo obrigatório.
-
-```php
-$validator->required(
-    "nome",
-    "O nome é obrigatório."
-);
-```
-
-## `string()`
-
-Verifica se o valor é texto.
-
-```php
-$validator->string(
-    "nome",
-    "O nome deve ser um texto."
-);
-```
-
-## `minLength()`
-
-Quantidade mínima de caracteres.
-
-```php
-$validator->minLength(
-    "nome",
-    3,
-    "O nome deve ter no mínimo 3 caracteres."
-);
-```
-
-## `maxLength()`
-
-Quantidade máxima de caracteres.
-
-```php
-$validator->maxLength(
-    "nome",
-    100,
-    "O nome deve ter no máximo 100 caracteres."
-);
-```
-
-## `numeric()`
-
-Número inteiro ou decimal.
-
-```php
-$validator->numeric(
-    "preco",
-    "O preço deve ser numérico."
-);
-```
-
-## `integer()`
-
-Número inteiro.
-
-```php
-$validator->integer(
-    "quantidade",
-    "A quantidade deve ser inteira."
-);
-```
-
-## `min()`
-
-Valor mínimo.
-
-```php
-$validator->min(
-    "quantidade",
-    1,
-    "O valor mínimo é 1."
-);
-```
-
-## `max()`
-
-Valor máximo.
-
-```php
-$validator->max(
-    "quantidade",
-    100,
-    "O valor máximo é 100."
-);
-```
-
-## `between()`
-
-Valor entre dois limites.
-
-```php
-$validator->between(
-    "idade",
-    18,
-    65,
-    "A idade deve estar entre 18 e 65."
-);
-```
-
-## `email()`
-
-E-mail válido.
-
-```php
-$validator->email(
-    "email",
-    "Informe um e-mail válido."
-);
-```
-
-## `url()`
-
-URL válida.
-
-```php
-$validator->url(
-    "site",
-    "Informe uma URL válida."
-);
-```
-
-## `regex()`
-
-Validação personalizada por expressão regular.
-
-```php
-$validator->regex(
-    "telefone",
-    "/^[0-9]{10,11}$/",
-    "Informe um telefone válido."
-);
-```
-
-## `date()`
-
-Data válida no formato:
-
-```text
-dia/mês/ano
-```
-
-Exemplo:
-
-```php
-$validator->date(
-    "dataNascimento",
-    "Informe uma data válida."
-);
-```
-
-## `alpha()`
-
-Letras e espaços.
-
-```php
-$validator->alpha(
-    "nome",
-    "Utilize apenas letras."
-);
-```
-
-## `alphaNumeric()`
-
-Letras, números e espaços.
-
-```php
-$validator->alphaNumeric(
-    "codigo",
-    "Utilize apenas letras e números."
-);
-```
-
-## `in()`
-
-Valor pertencente a uma lista.
-
-```php
-$validator->in(
-    "categoria",
-    ["Roupa", "Alimento", "Eletrônico"],
-    "Categoria inválida."
-);
-```
-
-## `boolean()`
-
-Valores booleanos aceitos pela classe.
-
-```php
-$validator->boolean(
-    "ativo",
-    "Informe um valor válido."
-);
-```
-
-## `confirmed()`
-
-Compara um campo com seu campo de confirmação.
-
-```php
-$validator->confirmed(
-    "senha",
-    null,
-    "As senhas não conferem."
-);
-```
-
-Por padrão:
-
-```text
-senha
-senha_confirmation
-```
-
-## `same()`
-
-Compara dois campos.
-
-```php
-$validator->same(
-    "email",
-    "confirmarEmail",
-    "Os e-mails devem ser iguais."
-);
-```
-
----
-
-# 56. Métodos de resultado do Validator
-
-## `fails()`
-
-Retorna verdadeiro quando existem erros.
-
-```php
-if ($validator->fails()) {
-    // existem erros
-}
-```
-
-## `passes()`
-
-Retorna verdadeiro quando não existem erros.
-
-```php
-if ($validator->passes()) {
-    // dados válidos
-}
-```
-
-## `errors()`
-
-Retorna todos os erros:
-
-```php
-$validator->errors();
-```
-
-## `first()`
-
-Retorna os erros de um campo:
-
-```php
-$validator->first("nome");
-```
-
-## `data()`
-
-Retorna os dados recebidos:
-
-```php
-$validator->data();
-```
-
----
-
-# 57. Por que validar duas vezes?
-
-O projeto valida:
-
-```text
-Frontend
-+
-Backend
-```
+## 37. Por que validar no frontend e no backend?
 
 ### Frontend
 
-jQuery Validation.
+``` text
+jQuery Validation
+```
 
-Objetivo:
-
-- ajudar o usuário;
-- mostrar erros rapidamente;
-- evitar requisições desnecessárias.
+Ajuda o usuário e evita envios desnecessários.
 
 ### Backend
 
-`Validator.php`.
+``` text
+Validator.php
+```
 
-Objetivo:
-
-- não confiar somente no navegador;
-- garantir que os dados recebidos sejam verificados no servidor.
+Garante que o servidor valide os dados recebidos.
 
 Fluxo:
 
-```text
+``` text
 Usuário
 ↓
 jQuery Validation
+↓
+FormData
 ↓
 Fetch
 ↓
@@ -2028,176 +1483,146 @@ Controller
 Validator PHP
 ```
 
----
+A validação do frontend não substitui a validação do backend.
 
-# 58. CSS
+------------------------------------------------------------------------
 
-Arquivos existentes:
+# PARTE 3 --- FLUXOS DO PROJETO
 
-```text
-404.css
-cliente.css
-funcionario.css
-produto.css
-```
+## 38. Fluxo público atual
 
-No estado atual:
-
-- `produto.css` está vazio;
-- `cliente.css` está vazio;
-- `funcionario.css` está vazio;
-- `404.css` possui estilos.
-
-Isso é aceitável durante a construção didática. Os arquivos vazios deixam a estrutura preparada para futuras personalizações.
-
----
-
-# 59. Model
-
-A pasta existe:
-
-```text
-models/
-```
-
-Atualmente contém apenas:
-
-```text
-exemploModel.php
-```
-
-e ainda não há implementação de acesso ao banco.
-
-Quando implementado, o Model deverá concentrar operações como:
-
-```text
-salvar
-listar
-buscar
-editar
-excluir
-```
-
----
-
-# 60. Config
-
-A pasta:
-
-```text
-config/
-```
-
-está preparada para configurações futuras.
-
-Exemplo:
-
-```text
-config/exemploConfig.php
-```
-
-Futuramente poderá conter a configuração/conexão com o banco de dados.
-
----
-
-# 61. Layout
-
-A pasta:
-
-```text
-layout/
-```
-
-também está preparada para evolução.
-
-Atualmente o cabeçalho e o rodapé estão diretamente no:
-
-```text
+``` text
+Usuário
+↓
 index.php
+↓
+Landing Page
+↓
+Login
+↓
+Entrar
+↓
+Home administrativa
 ```
 
-Futuramente eles podem ser separados, por exemplo:
+Neste momento não existe verificação de usuário e senha.
 
-```text
-layout/header.php
-layout/footer.php
-```
+------------------------------------------------------------------------
 
-Isso não é necessário para o estágio atual do projeto.
+## 39. Fluxo dos cadastros
 
----
-
-# 62. Helpers e conversões
-
-Ainda não existe `helpers.php` no projeto atual.
-
-Caso seja necessário transformar dados sem misturar essa responsabilidade com o Validator, poderá ser criado:
-
-```text
-libs/helpers.php
-```
-
-Exemplo futuro para data:
-
-```php
-function dataParaBanco($data)
-{
-    $partes = explode("/", $data);
-
-    if (count($partes) !== 3) {
-        return null;
-    }
-
-    $dia = $partes[0];
-    $mes = $partes[1];
-    $ano = $partes[2];
-
-    return "$ano-$mes-$dia";
-}
-```
-
-Entrada:
-
-```text
-25/12/2026
-```
-
-Saída:
-
-```text
-2026-12-25
-```
-
-O princípio é:
-
-```text
+``` text
+Usuário
+↓
+View
+↓
+Formulário
+↓
+jQuery Validation
+↓
+jQuery Mask
+↓
+FormData
+↓
+Preparação dos valores
+↓
+Fetch
+↓
+POST
+↓
+Controller
+↓
 Validator
-→ valida
-
-Helper
-→ transforma
+↓
+JSON
+↓
+JavaScript
+↓
+Mensagem na View
 ```
 
----
+------------------------------------------------------------------------
 
-# 63. Padronização de nomes
+## 40. Fluxo futuro com banco
 
-## Classes e Controllers PHP
+``` text
+View
+↓
+JavaScript
+↓
+Controller
+↓
+Validator
+↓
+Model
+↓
+Banco de Dados
+↓
+Model
+↓
+Controller
+↓
+JSON
+↓
+JavaScript
+↓
+View
+```
+
+------------------------------------------------------------------------
+
+## 41. Fluxo futuro de autenticação
+
+A estrutura atual já prepara o projeto para futuramente implementar:
+
+``` text
+Login
+↓
+LoginController
+↓
+Validação
+↓
+Busca do usuário no banco
+↓
+Verificação da senha
+↓
+$_SESSION
+↓
+Área protegida
+```
+
+Nesse momento o botão `<a>` do Login poderá voltar a ser um botão:
+
+``` html
+<button type="submit">
+    Entrar
+</button>
+```
+
+------------------------------------------------------------------------
+
+# PARTE 4 --- PADRONIZAÇÃO DO PROJETO
+
+## 42. Nomes dos arquivos
+
+### Classes e Controllers
 
 PascalCase:
 
-```text
+``` text
 Validator.php
 ProdutoController.php
 ClienteController.php
 FuncionarioController.php
 ```
 
-## Views
+### Views
 
-Minúsculo:
+Minúsculas:
 
-```text
+``` text
+landing.php
+login.php
 home.php
 produto.php
 cliente.php
@@ -2205,199 +1630,98 @@ funcionario.php
 404.php
 ```
 
-## JavaScript
+### JavaScript
 
 Minúsculo:
 
-```text
+``` text
 produto.js
 cliente.js
 funcionario.js
-404.js
+login.js
+helpers.js
 ```
 
-## CSS
+### CSS
 
 Minúsculo:
 
-```text
+``` text
 produto.css
 cliente.css
 funcionario.css
+login.css
 404.css
 ```
 
----
+------------------------------------------------------------------------
 
-# 64. Relação entre os arquivos de cada módulo
+## 43. Separação de responsabilidades
 
-## Produto
+``` text
+Validator.php
+→ valida dados no backend
 
-```text
-views/produto.php
-↓
-assets/js/produto.js
-↓
-controllers/ProdutoController.php
-↓
-futuro: models/Produto.php
-```
+helpers.php
+→ funções PHP reutilizáveis
 
-## Cliente
+helpers.js
+→ funções JavaScript reutilizáveis
 
-```text
-views/cliente.php
-↓
-assets/js/cliente.js
-↓
-controllers/ClienteController.php
-↓
-futuro: models/Cliente.php
-```
+produto.js / cliente.js / funcionario.js
+→ comportamento específico de cada tela
 
-## Funcionário
+Controller
+→ recebe, valida, processa e responde
 
-```text
-views/funcionario.php
-↓
-assets/js/funcionario.js
-↓
-controllers/FuncionarioController.php
-↓
-futuro: models/Funcionario.php
-```
+Model
+→ futuramente acessará o banco
 
----
-
-# 65. Checklist para criar um novo cadastro
-
-Exemplo: futuramente criar `Pedido`.
-
-```text
-1. Criar views/pedido.php
-2. Adicionar "pedidos" em routes.php
-3. Adicionar link no menu
-4. Criar assets/css/pedido.css
-5. Criar assets/js/pedido.js
-6. Criar o formulário
-7. Aplicar máscaras, se necessário
-8. Criar validações frontend
-9. Criar FormData
-10. Preparar os dados
-11. Criar controllers/PedidoController.php
-12. Criar validações backend
-13. Manter o contrato JSON
-14. Criar futuramente models/Pedido.php
-15. Salvar no banco
-16. Testar erros e sucesso
-```
-
----
-
-# 66. Pontos observados na revisão do projeto
-
-A estrutura geral está coerente e os três módulos de cadastro seguem um padrão muito parecido.
-
-### Já está padronizado
-
-- Home como página inicial;
-- rotas em um array;
-- Views em minúsculo;
-- Controllers em PascalCase;
-- formulários com Bootstrap;
-- `invalid-feedback` e `valid-feedback`;
-- scripts separados por módulo;
-- máscaras;
-- remoção das máscaras antes do backend;
-- Controllers usando `Validator`;
-- código HTTP `405` para método incorreto;
-- código HTTP `422` para validação;
-- código HTTP `200` para sucesso;
-- contrato JSON com `sucesso`, `mensagem`, `dados` e `erros`;
-- tratamento de erros do backend no JavaScript;
-- reset das classes `is-valid` e `is-invalid`.
-
-
-# 67. O que ainda falta implementar
-
-Para completar o MVC com persistência real:
-
-```text
-1. Configurar o banco de dados
-2. Criar a conexão
-3. Criar tabelas
-4. Criar Models
-5. Fazer o Controller chamar o Model
-6. Inserir dados
-7. Tratar erros do banco
-8. Listar registros
-9. Buscar registros
-10. Editar registros
-11. Excluir registros
-```
-
-Neste momento, o projeto já demonstra com clareza:
-
-```text
 View
-+
-JavaScript
-+
-Rotas
-+
-Controller
-+
-Validação frontend
-+
-Validação backend
-+
-JSON
+→ apresenta a interface
 ```
 
-O próximo grande passo é:
+------------------------------------------------------------------------
 
-```text
-Model
-+
-Banco de Dados
-```
+# PARTE 5 --- ESTADO ATUAL E PRÓXIMAS ETAPAS
 
----
+## 44. O que já está pronto
 
-# 68. Resumo final
+-   Estrutura de pastas;
+-   Landing Page;
+-   Login visual;
+-   Home administrativa;
+-   Rotas;
+-   Página 404;
+-   Views dos três cadastros;
+-   Bootstrap;
+-   jQuery;
+-   Validation;
+-   Mask;
+-   JavaScript dos cadastros;
+-   Controllers;
+-   Validator;
+-   Helpers PHP;
+-   Helpers JavaScript;
+-   Contrato JSON padronizado;
+-   Tratamento de erros de validação.
 
-O principal aprendizado do projeto é compreender o caminho da informação.
+------------------------------------------------------------------------
 
-```text
-Usuário preenche
-↓
-View apresenta
-↓
-jQuery valida
-↓
-JavaScript prepara
-↓
-Fetch envia
-↓
-Controller recebe
-↓
-Validator valida novamente
-↓
-Controller responde JSON
-↓
-JavaScript interpreta
-↓
-View mostra o resultado
-```
+## 45. O que ainda não está implementado
 
-Quando o Model for implementado:
+-   Autenticação real;
+-   `LoginController.php`;
+-   `$_SESSION`;
+-   Logout real;
+-   Proteção das rotas administrativas;
+-   Banco de dados;
+-   Conexão com banco;
+-   Models reais;
+-   Persistência dos cadastros;
+-   Listagem;
+-   Edição;
+-   Exclusão.
 
-```text
-Controller
-↓
-Model
-↓
-Banco de Dados
-```
+------------------------------------------------------------------------
 
-Essa separação de responsabilidades ajuda a tornar o sistema mais organizado, previsível e fácil de manter, além de preparar o aluno para trabalhar futuramente com frameworks PHP que utilizam conceitos semelhantes, como Laravel e CodeIgniter.
