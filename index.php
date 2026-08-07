@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Sistema de Cadastros</title>
 
@@ -18,6 +16,9 @@
 </head>
 
 <body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Página atual -->
+    <?php $page = $_GET['page'] ?? 'produtos'; ?>
 
     <!-- Cabeçalho -->
     <header class="bg-dark text-white py-3">
@@ -32,21 +33,20 @@
                 <!-- Menu principal -->
                 <nav class="nav">
 
-                    <a
-                        href="index.php?page=produtos"
-                        class="nav-link text-white">
+                    <!-- TODO: PHP para indicar página ativa -->
+
+                    <a href="index.php?page=produtos"
+                        class="nav-link <?= $page === 'produtos' ? 'text-white fw-bold' : 'text-white-50' ?>">
                         Produtos
                     </a>
 
-                    <a
-                        href="index.php?page=clientes"
-                        class="nav-link text-white">
+                    <a href="index.php?page=clientes"
+                        class="nav-link <?= $page === 'clientes' ? 'text-white fw-bold' : 'text-white-50' ?>">
                         Clientes
                     </a>
 
-                    <a
-                        href="index.php?page=funcionarios"
-                        class="nav-link text-white">
+                    <a href="index.php?page=funcionarios"
+                        class="nav-link <?= $page === 'funcionarios' ? 'text-white fw-bold' : 'text-white-50' ?>">
                         Funcionários
                     </a>
 
