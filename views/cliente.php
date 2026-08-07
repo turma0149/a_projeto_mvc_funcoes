@@ -1,74 +1,84 @@
-<!-- css da página -->
+<!-- CSS da página -->
 <link rel="stylesheet" href="assets/css/cliente.css">
 
-<section>
-    <div class="col-md-6 mx-auto">
-        <h2> Cadastro de clientes </h2>
+<div class="col-md-6 mx-auto mt-5">
 
-        <!-- Formulário -->
-        <form id="formCliente">
+    <h2>Cadastro de clientes</h2>
 
-            <!-- Nome -->
-            <div class="mb-3">
-                <label for="nome"> Nome </label>
-                <div class="input-group">
-                    <span class="input-group-text"> <i class="bi bi-box"></i> </span>
-                    <input type="text" id="nome" name="nome" class="form-control">
-                    <div class="invalid-feedback"></div>
-                    <div class="valid-feedback"></div>
-                </div>
+    <!-- Formulário -->
+    <form id="formCliente">
+
+        <!-- Nome -->
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="bi bi-person"></i>
+                </span>
+
+                <input type="text" id="nome" name="nome" class="form-control">
+
+                <div class="invalid-feedback"></div>
+                <div class="valid-feedback"></div>
             </div>
+        </div>
 
-            <!-- CPF -->
-            <div class="mb-3">
-                <label for="cpf"> CPF </label>
-                <div class="input-group">
-                    <span class="input-group-text"> <i class="bi bi-person"></i></span>
-                    <input type="text" id="cpf" name="cpf" class="form-control">
+        <!-- CPF -->
+        <div class="mb-3">
+            <label for="cpf" class="form-label">CPF</label>
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="bi bi-card-text"></i>
+                </span>
 
-                    <div class="invalid-feedback"></div>
-                    <div class="valid-feedback"></div>
-                </div>
+                <input type="text" id="cpf" name="cpf" class="form-control">
+
+                <div class="invalid-feedback"></div>
+                <div class="valid-feedback"></div>
             </div>
+        </div>
 
-            <!-- e-mail -->
-            <div class="mb-3">
-                <label for="email"> E-mail </label>
-                <div class="input-group">
-                    <span class="input-group-text"> <i class="bi bi-person"></i></span>
-                    <input type="text" id="email" name="email" class="form-control">
+        <!-- E-mail -->
+        <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="bi bi-envelope"></i>
+                </span>
 
-                    <div class="invalid-feedback"></div>
-                    <div class="valid-feedback"></div>
-                </div>
+                <input type="email" id="email" name="email" class="form-control">
+
+                <div class="invalid-feedback"></div>
+                <div class="valid-feedback"></div>
             </div>
+        </div>
 
+        <!-- Telefone -->
+        <div class="mb-3">
+            <label for="telefone" class="form-label">Telefone</label>
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="bi bi-telephone"></i>
+                </span>
 
-            <!-- telefone -->
-            <div class="mb-3">
-                <label for="telefone"> Telefone </label>
-                <div class="input-group">
-                    <span class="input-group-text"> <i class="bi bi-person"></i></span>
-                    <input type="text" id="telefone" name="telefone" class="form-control">
+                <input type="text" id="telefone" name="telefone" class="form-control">
 
-                    <div class="invalid-feedback"></div>
-                    <div class="valid-feedback"></div>
-                </div>
+                <div class="invalid-feedback"></div>
+                <div class="valid-feedback"></div>
             </div>
+        </div>
 
-            <button type="submit" class="btn btn-primary w-100">
-                Cadastrar
-            </button>
+        <!-- Botão -->
+        <button type="submit" class="btn btn-primary w-100">
+            Cadastrar
+        </button>
 
-        </form>
+    </form>
 
-        <!-- Mensagem de Retorno -->
-        <div id="mensagem" class="alert d-none mt-3"> </div>
+    <!-- Mensagem de retorno -->
+    <div id="mensagem" class="alert d-none mt-3"></div>
 
-    </div>
-
-
-</section>
+</div>
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -79,5 +89,5 @@
 <!-- jQuery Mask -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
-<!-- script da página -->
+<!-- Script da página -->
 <script src="assets/js/cliente.js"></script>
