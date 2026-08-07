@@ -5,7 +5,7 @@ header("Content-Type: application/json; charset=utf-8");
 
 
 // Carrega a classe Validator
-require __DIR__ . "/../libs/Validator.php";
+require __DIR__ . "/../libs/php/Validator.php";
 
 
 // Verifica se a requisição é do tipo POST

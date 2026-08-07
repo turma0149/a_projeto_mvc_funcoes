@@ -1,3 +1,6 @@
+<!-- CSS da página -->
+<link rel="stylesheet" href="assets/css/404.css">
+
 <div class="container mt-5">
 
     <div class="row align-items-center min-vh-75">
