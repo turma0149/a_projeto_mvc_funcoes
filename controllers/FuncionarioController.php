@@ -7,8 +7,7 @@ header("Content-Type: application/json; charset=utf-8");
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405); //405 - método não permitido
 
-    echo jso//Executa a função que contém as regras de validação
-    validarCadastro($validator);n_encode([
+    echo json_encode([
         "sucesso" => false,
         "mensagem" => "Método não permitido, esperava POST"
     ]);

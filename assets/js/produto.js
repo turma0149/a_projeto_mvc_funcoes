@@ -31,10 +31,10 @@ function validarFormulario() {
   $("#formProduto").validate({
     // Regras de validação
     rules: {
-      // nome: {
-      //   required: true,
-      //   minlength: 3,
-      // },
+      nome: {
+        required: true,
+        minlength: 3,
+      },
       categoria: {
         required: true,
         minlength: 3,
@@ -71,20 +71,27 @@ function validarFormulario() {
 
     // Mensagens de erro
     errorPlacement: function (error, element) {
-      element
-        .closest(".input-group")
-        .find(".invalid-feedback")
-        .text(error.text());
+      element.closest(".mb-3").find(".invalid-feedback").text(error.text());
     },
 
     // Executado quando o campo está inválido
     highlight: function (element) {
-      $(element).removeClass("is-valid").addClass("is-invalid");
+      const campo = $(element);
+      const grupo = campo.closest(".mb-3");
+
+      campo.removeClass("is-valid").addClass("is-invalid");
+
+      grupo.find(".valid-feedback").text("");
     },
 
     // Executado quando o campo está válido
     unhighlight: function (element) {
-      $(element).removeClass("is-invalid").addClass("is-valid");
+      const campo = $(element);
+      const grupo = campo.closest(".mb-3");
+
+      campo.removeClass("is-invalid").addClass("is-valid");
+
+      grupo.find(".invalid-feedback").text("");
     },
 
     // Executado somente quando todos os campos forem válidos
@@ -125,9 +132,7 @@ function validarFormulario() {
         //console.log(resultado);
 
         // Verifica se ocorreu erro HTTP
-        if (!resposta.sucesso) {
-          //TODO de ok para sucesso
-          //TODO
+        if (!resposta.ok) {
           mensagem.className = "alert alert-danger mt-3";
           let conteudo = `<strong>${resultado.mensagem}</strong>`;
           if (resultado.erros) {
