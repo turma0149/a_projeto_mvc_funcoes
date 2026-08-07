@@ -34,18 +34,15 @@ function validarFormulario() {
         minlength: 3,
         maxlength: 100,
       },
-
       cpf: {
         required: true,
         minlength: 14,
         maxlength: 14,
       },
-
       email: {
         required: true,
         email: true,
       },
-
       telefone: {
         required: true,
         minlength: 15,

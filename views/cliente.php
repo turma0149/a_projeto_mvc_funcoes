@@ -1,7 +1,7 @@
 <!-- CSS da página -->
 <link rel="stylesheet" href="assets/css/cliente.css">
 
-<div class="col-md-6 mx-auto mt-5">
+<div class="col-md-6 mx-auto mt-5" id="container-cliente">
 
     <h2>Cadastro de clientes</h2>
 
@@ -12,10 +12,7 @@
         <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
             <div class="input-group">
-                <span class="input-group-text">
-                    <i class="bi bi-person"></i>
-                </span>
-
+                <span class="input-group-text"> <i class="bi bi-person"></i></span>
                 <input type="text" id="nome" name="nome" class="form-control">
 
                 <div class="invalid-feedback"></div>
@@ -27,10 +24,7 @@
         <div class="mb-3">
             <label for="cpf" class="form-label">CPF</label>
             <div class="input-group">
-                <span class="input-group-text">
-                    <i class="bi bi-card-text"></i>
-                </span>
-
+                <span class="input-group-text"><i class="bi bi-card-text"></i></span>
                 <input type="text" id="cpf" name="cpf" class="form-control">
 
                 <div class="invalid-feedback"></div>

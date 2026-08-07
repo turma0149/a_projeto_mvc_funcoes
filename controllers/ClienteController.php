@@ -71,85 +71,79 @@ exit;
 function validarCadastro($validator)
 {
     // Nome
-    $validator->required(
-        "nome",
-        "O nome do cliente é obrigatório."
-    );
+    $validator->required("nome", "O nome do cliente é obrigatório. (controllerCliente)");
 
-    $validator->string(
-        "nome",
-        "O nome do cliente deve ser um texto válido."
-    );
+    $validator->string("nome", "O nome do cliente deve ser um texto válido. (controllerCliente)");
 
     $validator->minLength(
         "nome",
         3,
-        "O nome do cliente deve conter no mínimo 3 caracteres."
+        "O nome do cliente deve conter no mínimo 3 caracteres. (controllerCliente)"
     );
 
     $validator->maxLength(
         "nome",
         100,
-        "O nome do cliente deve conter no máximo 100 caracteres."
+        "O nome do cliente deve conter no máximo 100 caracteres. (controllerCliente)"
     );
 
 
     // CPF
     $validator->required(
         "cpf",
-        "O CPF do cliente é obrigatório."
+        "O CPF do cliente é obrigatório. (controllerCliente)"
     );
 
     $validator->string(
         "cpf",
-        "O CPF do cliente deve ser um texto válido."
+        "O CPF do cliente deve ser um texto válido. (controllerCliente)     "
     );
 
     $validator->minLength(
         "cpf",
         11,
-        "O CPF do cliente deve conter 11 dígitos."
+        "O CPF do cliente deve conter 11 dígitos. (controllerCliente)"
     );
 
     $validator->maxLength(
         "cpf",
         11,
-        "O CPF do cliente deve conter 11 dígitos."
+        "O CPF do cliente deve conter 11 dígitos. (controllerCliente)"
     );
 
 
     // E-mail
     $validator->required(
         "email",
-        "O e-mail do cliente é obrigatório."
+        "O e-mail do cliente é obrigatório. (controllerCliente)"
     );
 
     $validator->email(
         "email",
-        "Informe um e-mail válido."
+        "Informe um e-mail válido. (controllerCliente)"
     );
 
 
     // Telefone
     $validator->required(
         "telefone",
-        "O telefone do cliente é obrigatório."
+        "O telefone do cliente é obrigatório. (controllerCliente)"
     );
 
     $validator->string(
         "telefone",
-        "O telefone do cliente deve ser um texto válido."
+        "O telefone do cliente deve ser um texto válido. (controllerCliente)"
     );
 
     $validator->minLength(
         "telefone",
         10,
-        "O telefone do cliente deve conter no mínimo 10 dígitos."
+        "O telefone do cliente deve conter no mínimo 10 dígitos. (controllerCliente)"
     );
 
     $validator->maxLength(
         "telefone",
-        11,
-        "O telefone do cliente deve conter no máximo 11 dígitos."
+        10,
+        "O telefone do cliente deve conter no máximo 10 dígitos.(controllerCliente)"
     );
 }
