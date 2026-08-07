@@ -5,15 +5,16 @@
 | CLASSE VALIDATOR
 |--------------------------------------------------------------------------
 |
-| Esta classe recebe os dados de um formulário e verifica se eles são válidos.
+| Responsável por validar os dados recebidos de um formulário.
 |
-| Exemplo:
+| Exemplo inicial:
 |
 | $validator = new Validator($_POST);
 |
-| $validator
-|     ->required("nome")
-|     ->email("email");
+| $validator->required(
+|     "nome",
+|     "O nome é obrigatório."
+| );
 |
 | if ($validator->fails()) {
 |     print_r($validator->errors());
@@ -25,25 +26,27 @@ class Validator
 {
     /*
     |--------------------------------------------------------------------------
-    | PROPRIEDADES
+    | 1. PROPRIEDADES
     |--------------------------------------------------------------------------
     */
 
-    // Guarda os dados recebidos do formulário.
+    // Guarda os dados recebidos do formulário
     private $dados = [];
 
-    // Guarda as mensagens de erro encontradas.
+    // Guarda os erros encontrados
     private $erros = [];
 
 
     /*
     |--------------------------------------------------------------------------
-    | CONSTRUTOR
+    | 2. CONSTRUTOR
     |--------------------------------------------------------------------------
     |
-    | O construtor é executado quando usamos:
+    | O construtor recebe os dados que serão validados.
     |
-    | new Validator($_POST);
+    | Exemplo:
+    |
+    | $validator = new Validator($_POST);
     |
     */
 
@@ -55,52 +58,51 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | MÉTODOS AUXILIARES
+    | 3. MÉTODOS AUXILIARES
     |--------------------------------------------------------------------------
+    |
+    | Estes métodos são utilizados internamente pela classe.
+    | Não são chamados diretamente no Controller.
+    |
     */
 
-    // Retorna o valor de um campo.
+
+    // Retorna o valor de um campo
     private function valor($campo)
     {
-        // Caso o campo não exista, retorna uma string vazia.
         return $this->dados[$campo] ?? "";
     }
 
 
-    // Verifica se um campo está vazio.
+    // Verifica se um campo está vazio
     private function vazio($campo)
     {
         $valor = $this->valor($campo);
 
-        // Se for texto, remove espaços antes de verificar.
+        // Se for texto, remove espaços antes de verificar
         if (is_string($valor)) {
             return trim($valor) === "";
         }
 
-        // Para outros tipos, utiliza empty.
         return empty($valor) && $valor !== 0 && $valor !== "0";
     }
 
 
-    // Adiciona uma nova mensagem ao array de erros.
+    // Adiciona uma mensagem ao array de erros
     private function adicionarErro($campo, $mensagem)
     {
-        // Se o campo ainda não possui erros,
-        // cria um array vazio para ele.
+        // Se ainda não existem erros para o campo,
+        // cria um array vazio
         if (!isset($this->erros[$campo])) {
             $this->erros[$campo] = [];
         }
 
-        // Adiciona a nova mensagem ao final do array.
         $this->erros[$campo][] = $mensagem;
     }
 
 
-    // Campos opcionais vazios não precisam ser validados.
-    //
-    // Exemplo:
-    // O site não é obrigatório.
-    // Se o usuário não preencher, não devemos mostrar "URL inválida".
+    // Campos opcionais vazios não precisam
+    // passar pelas demais validações
     private function ignorarSeVazio($campo)
     {
         return $this->vazio($campo);
@@ -109,8 +111,25 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 1. CAMPO OBRIGATÓRIO
+    | 4. VALIDAÇÕES BÁSICAS
     |--------------------------------------------------------------------------
+    */
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | REQUIRED
+    |--------------------------------------------------------------------------
+    |
+    | Verifica se o campo foi preenchido.
+    |
+    | Exemplo:
+    |
+    | $validator->required(
+    |     "nome",
+    |     "O nome do produto é obrigatório."
+    | );
+    |
     */
 
     public function required($campo, $mensagem = null)
@@ -122,17 +141,24 @@ class Validator
             );
         }
 
-        // Retorna a própria classe.
-        // Isso permite encadear os métodos:
-        // ->required("nome")->minLength("nome", 3)
         return $this;
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | 2. TEXTO
+    | STRING
     |--------------------------------------------------------------------------
+    |
+    | Verifica se o valor recebido é um texto.
+    |
+    | Exemplo:
+    |
+    | $validator->string(
+    |     "nome",
+    |     "O nome deve ser um texto válido."
+    | );
+    |
     */
 
     public function string($campo, $mensagem = null)
@@ -154,8 +180,111 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 3. NÚMERO
+    | 5. VALIDAÇÕES DE TAMANHO
     |--------------------------------------------------------------------------
+    */
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MIN LENGTH
+    |--------------------------------------------------------------------------
+    |
+    | Define a quantidade mínima de caracteres.
+    |
+    | Exemplo:
+    |
+    | $validator->minLength(
+    |     "nome",
+    |     3,
+    |     "O nome deve conter no mínimo 3 caracteres."
+    | );
+    |
+    */
+
+    public function minLength($campo, $minimo, $mensagem = null)
+    {
+        if ($this->ignorarSeVazio($campo)) {
+            return $this;
+        }
+
+        $valor = trim($this->valor($campo));
+
+        if (strlen($valor) < $minimo) {
+            $this->adicionarErro(
+                $campo,
+                $mensagem
+                    ?? "O campo $campo deve ter pelo menos $minimo caracteres."
+            );
+        }
+
+        return $this;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MAX LENGTH
+    |--------------------------------------------------------------------------
+    |
+    | Define a quantidade máxima de caracteres.
+    |
+    | Exemplo:
+    |
+    | $validator->maxLength(
+    |     "nome",
+    |     100,
+    |     "O nome deve conter no máximo 100 caracteres."
+    | );
+    |
+    */
+
+    public function maxLength($campo, $maximo, $mensagem = null)
+    {
+        if ($this->ignorarSeVazio($campo)) {
+            return $this;
+        }
+
+        $valor = trim($this->valor($campo));
+
+        if (strlen($valor) > $maximo) {
+            $this->adicionarErro(
+                $campo,
+                $mensagem
+                    ?? "O campo $campo deve ter no máximo $maximo caracteres."
+            );
+        }
+
+        return $this;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | 6. VALIDAÇÕES NUMÉRICAS
+    |--------------------------------------------------------------------------
+    */
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | NUMERIC
+    |--------------------------------------------------------------------------
+    |
+    | Verifica se o campo possui um valor numérico.
+    |
+    | Exemplos aceitos:
+    |
+    | 10
+    | 10.50
+    |
+    | Exemplo:
+    |
+    | $validator->numeric(
+    |     "preco",
+    |     "O preço deve ser numérico."
+    | );
+    |
     */
 
     public function numeric($campo, $mensagem = null)
@@ -177,8 +306,18 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 4. NÚMERO INTEIRO
+    | INTEGER
     |--------------------------------------------------------------------------
+    |
+    | Verifica se o valor é um número inteiro.
+    |
+    | Exemplo:
+    |
+    | $validator->integer(
+    |     "quantidade",
+    |     "A quantidade deve ser um número inteiro."
+    | );
+    |
     */
 
     public function integer($campo, $mensagem = null)
@@ -202,63 +341,18 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 5. E-MAIL
-    |--------------------------------------------------------------------------
-    */
-
-    public function email($campo, $mensagem = null)
-    {
-        if ($this->ignorarSeVazio($campo)) {
-            return $this;
-        }
-
-        $valor = $this->valor($campo);
-
-        if (!filter_var($valor, FILTER_VALIDATE_EMAIL)) {
-            $this->adicionarErro(
-                $campo,
-                $mensagem ?? "Informe um e-mail válido."
-            );
-        }
-
-        return $this;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | 6. URL
-    |--------------------------------------------------------------------------
-    */
-
-    public function url($campo, $mensagem = null)
-    {
-        if ($this->ignorarSeVazio($campo)) {
-            return $this;
-        }
-
-        $valor = $this->valor($campo);
-
-        if (!filter_var($valor, FILTER_VALIDATE_URL)) {
-            $this->adicionarErro(
-                $campo,
-                $mensagem ?? "Informe uma URL válida."
-            );
-        }
-
-        return $this;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | 7. VALOR MÍNIMO
+    | MIN
     |--------------------------------------------------------------------------
     |
-    | Usado para números.
+    | Define o menor valor permitido.
     |
     | Exemplo:
-    | ->min("preco", 1)
+    |
+    | $validator->min(
+    |     "quantidade",
+    |     1,
+    |     "A quantidade deve ser maior ou igual a 1."
+    | );
     |
     */
 
@@ -283,8 +377,19 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 8. VALOR MÁXIMO
+    | MAX
     |--------------------------------------------------------------------------
+    |
+    | Define o maior valor permitido.
+    |
+    | Exemplo:
+    |
+    | $validator->max(
+    |     "quantidade",
+    |     100,
+    |     "A quantidade deve ser no máximo 100."
+    | );
+    |
     */
 
     public function max($campo, $maximo, $mensagem = null)
@@ -308,8 +413,20 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 9. VALOR ENTRE DOIS NÚMEROS
+    | BETWEEN
     |--------------------------------------------------------------------------
+    |
+    | Verifica se o valor está entre dois números.
+    |
+    | Exemplo:
+    |
+    | $validator->between(
+    |     "idade",
+    |     18,
+    |     65,
+    |     "A idade deve estar entre 18 e 65 anos."
+    | );
+    |
     */
 
     public function between($campo, $minimo, $maximo, $mensagem = null)
@@ -338,23 +455,39 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 10. QUANTIDADE MÍNIMA DE CARACTERES
+    | 7. VALIDAÇÕES DE FORMATO
     |--------------------------------------------------------------------------
     */
 
-    public function minLength($campo, $minimo, $mensagem = null)
+
+    /*
+    |--------------------------------------------------------------------------
+    | EMAIL
+    |--------------------------------------------------------------------------
+    |
+    | Verifica se o e-mail possui um formato válido.
+    |
+    | Exemplo:
+    |
+    | $validator->email(
+    |     "email",
+    |     "Informe um e-mail válido."
+    | );
+    |
+    */
+
+    public function email($campo, $mensagem = null)
     {
         if ($this->ignorarSeVazio($campo)) {
             return $this;
         }
 
-        $valor = trim($this->valor($campo));
+        $valor = $this->valor($campo);
 
-        if (strlen($valor) < $minimo) {
+        if (!filter_var($valor, FILTER_VALIDATE_EMAIL)) {
             $this->adicionarErro(
                 $campo,
-                $mensagem
-                    ?? "O campo $campo deve ter pelo menos $minimo caracteres."
+                $mensagem ?? "Informe um e-mail válido."
             );
         }
 
@@ -364,23 +497,32 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 11. QUANTIDADE MÁXIMA DE CARACTERES
+    | URL
     |--------------------------------------------------------------------------
+    |
+    | Verifica se o endereço informado é uma URL válida.
+    |
+    | Exemplo:
+    |
+    | $validator->url(
+    |     "site",
+    |     "Informe uma URL válida."
+    | );
+    |
     */
 
-    public function maxLength($campo, $maximo, $mensagem = null)
+    public function url($campo, $mensagem = null)
     {
         if ($this->ignorarSeVazio($campo)) {
             return $this;
         }
 
-        $valor = trim($this->valor($campo));
+        $valor = $this->valor($campo);
 
-        if (strlen($valor) > $maximo) {
+        if (!filter_var($valor, FILTER_VALIDATE_URL)) {
             $this->adicionarErro(
                 $campo,
-                $mensagem
-                    ?? "O campo $campo deve ter no máximo $maximo caracteres."
+                $mensagem ?? "Informe uma URL válida."
             );
         }
 
@@ -390,13 +532,18 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 12. EXPRESSÃO REGULAR
+    | REGEX
     |--------------------------------------------------------------------------
     |
-    | Permite criar uma validação personalizada.
+    | Permite criar uma validação usando expressão regular.
     |
-    | Exemplo de telefone:
-    | ->regex("telefone", "/^[0-9]{10,11}$/")
+    | Exemplo: telefone com 10 ou 11 números.
+    |
+    | $validator->regex(
+    |     "telefone",
+    |     "/^[0-9]{10,11}$/",
+    |     "Informe um telefone válido."
+    | );
     |
     */
 
@@ -421,43 +568,22 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 13. VALOR DENTRO DE UMA LISTA
+    | DATE
     |--------------------------------------------------------------------------
     |
-    | Exemplo:
+    | Valida uma data no formato:
     |
-    | ->in("categoria", ["Roupa", "Alimento", "Eletrônico"])
-    |
-    */
-
-    public function in($campo, $opcoes, $mensagem = null)
-    {
-        if ($this->ignorarSeVazio($campo)) {
-            return $this;
-        }
-
-        $valor = $this->valor($campo);
-
-        if (!in_array($valor, $opcoes)) {
-            $this->adicionarErro(
-                $campo,
-                $mensagem ?? "O valor informado no campo $campo não é permitido."
-            );
-        }
-
-        return $this;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | 14. DATA
-    |--------------------------------------------------------------------------
-    |
-    | Esta versão utiliza o formato brasileiro:
     | dia/mês/ano
     |
     | Exemplo:
+    |
+    | $validator->date(
+    |     "dataNascimento",
+    |     "Informe uma data válida."
+    | );
+    |
+    | Valor válido:
+    |
     | 25/12/2026
     |
     */
@@ -470,10 +596,10 @@ class Validator
 
         $valor = $this->valor($campo);
 
-        // Divide o texto usando a barra.
+        // Divide o texto usando a barra
         $partes = explode("/", $valor);
 
-        // Uma data deve possuir dia, mês e ano.
+        // Uma data deve possuir dia, mês e ano
         if (count($partes) !== 3) {
             $this->adicionarErro(
                 $campo,
@@ -487,8 +613,7 @@ class Validator
         $mes = $partes[1];
         $ano = $partes[2];
 
-        // checkdate verifica se a data realmente existe.
-        // Exemplo: 31/02 é inválido.
+        // Verifica se a data realmente existe
         if (!checkdate($mes, $dia, $ano)) {
             $this->adicionarErro(
                 $campo,
@@ -502,73 +627,29 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 15. CONFIRMAÇÃO
+    | 8. VALIDAÇÕES DE CONTEÚDO
     |--------------------------------------------------------------------------
-    |
-    | Por padrão:
-    |
-    | confirmed("senha")
-    |
-    | compara:
-    |
-    | senha
-    | senha_confirmation
-    |
     */
-
-    public function confirmed(
-        $campo,
-        $campoConfirmacao = null,
-        $mensagem = null
-    ) {
-        if ($this->ignorarSeVazio($campo)) {
-            return $this;
-        }
-
-        // Caso não seja informado, cria o nome automaticamente.
-        if ($campoConfirmacao === null) {
-            $campoConfirmacao = $campo . "_confirmation";
-        }
-
-        if ($this->valor($campo) !== $this->valor($campoConfirmacao)) {
-            $this->adicionarErro(
-                $campo,
-                $mensagem ?? "A confirmação do campo $campo não confere."
-            );
-        }
-
-        return $this;
-    }
 
 
     /*
     |--------------------------------------------------------------------------
-    | 16. CAMPOS IGUAIS
+    | ALPHA
     |--------------------------------------------------------------------------
-    */
-
-    public function same($campo, $outroCampo, $mensagem = null)
-    {
-        if ($this->ignorarSeVazio($campo)) {
-            return $this;
-        }
-
-        if ($this->valor($campo) !== $this->valor($outroCampo)) {
-            $this->adicionarErro(
-                $campo,
-                $mensagem
-                    ?? "O campo $campo deve ser igual ao campo $outroCampo."
-            );
-        }
-
-        return $this;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | 17. APENAS LETRAS E ESPAÇOS
-    |--------------------------------------------------------------------------
+    |
+    | Permite apenas letras e espaços.
+    |
+    | Exemplo:
+    |
+    | $validator->alpha(
+    |     "nome",
+    |     "O nome deve conter apenas letras."
+    | );
+    |
+    | Aceita:
+    |
+    | Maria Silva
+    |
     */
 
     public function alpha($campo, $mensagem = null)
@@ -592,8 +673,22 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 18. LETRAS E NÚMEROS
+    | ALPHA NUMERIC
     |--------------------------------------------------------------------------
+    |
+    | Permite letras, números e espaços.
+    |
+    | Exemplo:
+    |
+    | $validator->alphaNumeric(
+    |     "codigo",
+    |     "O código deve conter apenas letras e números."
+    | );
+    |
+    | Aceita:
+    |
+    | PRODUTO 123
+    |
     */
 
     public function alphaNumeric($campo, $mensagem = null)
@@ -618,11 +713,64 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | 19. VALOR BOOLEANO
+    | IN
     |--------------------------------------------------------------------------
     |
-    | Aceita:
-    | true, false, 1, 0, "1" e "0"
+    | Verifica se o valor informado pertence
+    | a uma lista de valores permitidos.
+    |
+    | Exemplo:
+    |
+    | $validator->in(
+    |     "categoria",
+    |     ["Roupa", "Alimento", "Eletrônico"],
+    |     "Informe uma categoria válida."
+    | );
+    |
+    */
+
+    public function in($campo, $opcoes, $mensagem = null)
+    {
+        if ($this->ignorarSeVazio($campo)) {
+            return $this;
+        }
+
+        $valor = $this->valor($campo);
+
+        if (!in_array($valor, $opcoes)) {
+            $this->adicionarErro(
+                $campo,
+                $mensagem
+                    ?? "O valor informado no campo $campo não é permitido."
+            );
+        }
+
+        return $this;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | BOOLEAN
+    |--------------------------------------------------------------------------
+    |
+    | Verifica se o valor representa verdadeiro ou falso.
+    |
+    | Valores aceitos:
+    |
+    | true
+    | false
+    | 1
+    | 0
+    | "1"
+    | "0"
+    |
+    | Exemplo:
+    |
+    | $validator->boolean(
+    |     "ativo",
+    |     "Informe se o cadastro está ativo."
+    | );
     |
     */
 
@@ -633,7 +781,15 @@ class Validator
         }
 
         $valor = $this->valor($campo);
-        $valoresPermitidos = [true, false, 1, 0, "1", "0"];
+
+        $valoresPermitidos = [
+            true,
+            false,
+            1,
+            0,
+            "1",
+            "0"
+        ];
 
         if (!in_array($valor, $valoresPermitidos, true)) {
             $this->adicionarErro(
@@ -649,40 +805,195 @@ class Validator
 
     /*
     |--------------------------------------------------------------------------
-    | MÉTODOS PARA CONSULTAR O RESULTADO
+    | 9. VALIDAÇÕES ENTRE CAMPOS
     |--------------------------------------------------------------------------
     */
 
 
-    // Retorna true quando encontrou pelo menos um erro.
+    /*
+    |--------------------------------------------------------------------------
+    | CONFIRMED
+    |--------------------------------------------------------------------------
+    |
+    | Compara um campo com seu campo de confirmação.
+    |
+    | Por padrão:
+    |
+    | senha
+    | senha_confirmation
+    |
+    | Exemplo:
+    |
+    | $validator->confirmed(
+    |     "senha",
+    |     null,
+    |     "A confirmação da senha não confere."
+    | );
+    |
+    */
+
+    public function confirmed(
+        $campo,
+        $campoConfirmacao = null,
+        $mensagem = null
+    ) {
+        if ($this->ignorarSeVazio($campo)) {
+            return $this;
+        }
+
+        // Caso não seja informado,
+        // cria o campo de confirmação automaticamente
+        if ($campoConfirmacao === null) {
+            $campoConfirmacao = $campo . "_confirmation";
+        }
+
+        if ($this->valor($campo) !== $this->valor($campoConfirmacao)) {
+            $this->adicionarErro(
+                $campo,
+                $mensagem
+                    ?? "A confirmação do campo $campo não confere."
+            );
+        }
+
+        return $this;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SAME
+    |--------------------------------------------------------------------------
+    |
+    | Verifica se dois campos possuem o mesmo valor.
+    |
+    | Exemplo:
+    |
+    | $validator->same(
+    |     "email",
+    |     "confirmarEmail",
+    |     "Os e-mails devem ser iguais."
+    | );
+    |
+    */
+
+    public function same($campo, $outroCampo, $mensagem = null)
+    {
+        if ($this->ignorarSeVazio($campo)) {
+            return $this;
+        }
+
+        if ($this->valor($campo) !== $this->valor($outroCampo)) {
+            $this->adicionarErro(
+                $campo,
+                $mensagem
+                    ?? "O campo $campo deve ser igual ao campo $outroCampo."
+            );
+        }
+
+        return $this;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | 10. RESULTADO DA VALIDAÇÃO
+    |--------------------------------------------------------------------------
+    */
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FAILS
+    |--------------------------------------------------------------------------
+    |
+    | Retorna true quando existe pelo menos um erro.
+    |
+    | Exemplo:
+    |
+    | if ($validator->fails()) {
+    |     echo "Existem erros.";
+    | }
+    |
+    */
+
     public function fails()
     {
         return !empty($this->erros);
     }
 
 
-    // Retorna true quando nenhum erro foi encontrado.
+    /*
+    |--------------------------------------------------------------------------
+    | PASSES
+    |--------------------------------------------------------------------------
+    |
+    | Retorna true quando não existem erros.
+    |
+    | Exemplo:
+    |
+    | if ($validator->passes()) {
+    |     echo "Dados válidos.";
+    | }
+    |
+    */
+
     public function passes()
     {
         return empty($this->erros);
     }
 
 
-    // Retorna todos os erros.
+    /*
+    |--------------------------------------------------------------------------
+    | ERRORS
+    |--------------------------------------------------------------------------
+    |
+    | Retorna todos os erros encontrados.
+    |
+    | Exemplo:
+    |
+    | $erros = $validator->errors();
+    |
+    */
+
     public function errors()
     {
         return $this->erros;
     }
 
 
-    // Retorna o erro de um campo específico.
+    /*
+    |--------------------------------------------------------------------------
+    | FIRST
+    |--------------------------------------------------------------------------
+    |
+    | Retorna os erros armazenados para um campo específico.
+    |
+    | Exemplo:
+    |
+    | $erroNome = $validator->first("nome");
+    |
+    */
+
     public function first($campo)
     {
         return $this->erros[$campo] ?? null;
     }
 
 
-    // Retorna os dados recebidos.
+    /*
+    |--------------------------------------------------------------------------
+    | DATA
+    |--------------------------------------------------------------------------
+    |
+    | Retorna os dados recebidos pelo Validator.
+    |
+    | Exemplo:
+    |
+    | $dados = $validator->data();
+    |
+    */
+
     public function data()
     {
         return $this->dados;
